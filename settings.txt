@@ -1,0 +1,10 @@
+resolution=1280x720
+retroResolution=256x160
+retroMode=true
+gameName=Nix Rescue Ship
+resizableWindow=false
+fullscreen=false
+fixedStep=false
+appId=0
+appSecret=0
+onScreenLog=true

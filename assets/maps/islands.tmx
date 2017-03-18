@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="8" tileheight="8" nextobjectid="28">
+ <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8">
+  <image source="../textures/tileset.png" width="128" height="128"/>
+  <terraintypes>
+   <terrain name="Land" tile="23"/>
+   <terrain name="Ocean" tile="72"/>
+  </terraintypes>
+  <tile id="0" terrain="1,1,1,0"/>
+  <tile id="1" terrain="1,1,0,0"/>
+  <tile id="2" terrain="1,1,0,1"/>
+  <tile id="3" terrain="1,1,1,0"/>
+  <tile id="4" terrain="1,1,0,0"/>
+  <tile id="5" terrain="1,1,0,1"/>
+  <tile id="6" terrain="1,1,1,0"/>
+  <tile id="7" terrain="1,1,0,0"/>
+  <tile id="8" terrain="1,1,0,1"/>
+  <tile id="9" terrain="1,1,1,0"/>
+  <tile id="10" terrain="1,1,0,0"/>
+  <tile id="11" terrain="1,1,0,1"/>
+  <tile id="16" terrain="1,0,1,0"/>
+  <tile id="17" terrain="0,0,0,0"/>
+  <tile id="18" terrain="0,1,0,1"/>
+  <tile id="19" terrain="1,0,1,0"/>
+  <tile id="20" terrain="0,0,0,0"/>
+  <tile id="21" terrain="0,1,0,1"/>
+  <tile id="22" terrain="1,0,1,0"/>
+  <tile id="23" terrain="0,0,0,0"/>
+  <tile id="24" terrain="0,1,0,1"/>
+  <tile id="25" terrain="1,0,1,0"/>
+  <tile id="26" terrain="0,0,0,0"/>
+  <tile id="27" terrain="0,1,0,1"/>
+  <tile id="32" terrain="1,0,1,1"/>
+  <tile id="33" terrain="0,0,1,1"/>
+  <tile id="34" terrain="0,1,1,1"/>
+  <tile id="35" terrain="1,0,1,1"/>
+  <tile id="36" terrain="0,0,1,1"/>
+  <tile id="37" terrain="0,1,1,1"/>
+  <tile id="38" terrain="1,0,1,1"/>
+  <tile id="39" terrain="0,0,1,1"/>
+  <tile id="40" terrain="0,1,1,1"/>
+  <tile id="41" terrain="1,0,1,1"/>
+  <tile id="42" terrain="0,0,1,1"/>
+  <tile id="43" terrain="0,1,1,1"/>
+  <tile id="48" terrain="0,0,0,1"/>
+  <tile id="49" terrain="0,0,1,0"/>
+  <tile id="50" terrain="0,0,0,1"/>
+  <tile id="51" terrain="0,0,1,0"/>
+  <tile id="52" terrain="0,0,0,1"/>
+  <tile id="53" terrain="0,0,1,0"/>
+  <tile id="54" terrain="0,0,0,1"/>
+  <tile id="55" terrain="0,0,1,0"/>
+  <tile id="56" terrain="1,1,1,1"/>
+  <tile id="57" terrain="1,1,1,1"/>
+  <tile id="64" terrain="0,1,0,0"/>
+  <tile id="65" terrain="1,0,0,0"/>
+  <tile id="66" terrain="0,1,0,0"/>
+  <tile id="67" terrain="1,0,0,0"/>
+  <tile id="68" terrain="0,1,0,0"/>
+  <tile id="69" terrain="1,0,0,0"/>
+  <tile id="70" terrain="0,1,0,0"/>
+  <tile id="71" terrain="1,0,0,0"/>
+  <tile id="72" terrain="1,1,1,1"/>
+  <tile id="73" terrain="1,1,1,1"/>
+ </tileset>
+ <layer name="Ground" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   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
+  </data>
+ </layer>
+ <layer name="Overlay" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3awRVAQAwE0PSFClAB+m/DHkMBgv3/vTnkNrlPBADwRUPLmDLV1nncfLvXkhZ1/B+xpLu3/7eWPeWorQMAAAAAAAAAAADwCjbWV71tbP1vY21jDcBfnC9gPBkAQAAA
+  </data>
+ </layer>
+ <layer name="Zones" width="64" height="64" visible="0" opacity="0.59">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3V2Q2DUAwFUWoM2fqvJLLyg55wEoEfS2aO5ALmgmAYJOnt0RxJ207bwH52f6BvQO8P9P6wR/84OaIxOYqsn7KB/ewN6P2B3h/st5/cL+k/XZojaduP3n9Lbqm5/qU73JOrdNb+qj2y/qU7bNFf+T5U94etN1ijR3+o6p/q8S04c3+V6vZQ3b/HP2DtBuHozz707K/Sq33qyP1boffrd9fmaNp+2gZz/W7A2oDYnzXbbz+B/cxuSdK+nslRZP2UDT71uwEDvT/Q+yV99wKMta6eAEAAAA==
+  </data>
+ </layer>
+ <objectgroup name="Entities">
+  <object id="1" type="player1" x="80" y="424" width="40" height="40"/>
+  <object id="2" type="player2" x="392" y="56" width="40" height="40"/>
+  <object id="3" type="nix" x="368" y="72" width="8" height="8"/>
+  <object id="4" type="nix" x="440" y="112" width="8" height="8"/>
+  <object id="5" type="nix" x="64" y="400" width="8" height="8"/>
+  <object id="6" type="nix" x="136" y="440" width="8" height="8"/>
+  <object id="7" type="nix" x="128" y="376" width="8" height="8"/>
+  <object id="8" type="nix" x="376" y="136" width="8" height="8"/>
+  <object id="9" type="nix" x="312" y="200" width="8" height="8"/>
+  <object id="10" type="nix" x="320" y="256" width="8" height="8"/>
+  <object id="11" type="nix" x="168" y="280" width="8" height="8"/>
+  <object id="12" type="nix" x="160" y="224" width="8" height="8"/>
+  <object id="13" type="nix" x="32" y="304" width="8" height="8"/>
+  <object id="14" type="nix" x="480" y="208" width="8" height="8"/>
+  <object id="15" type="nix" x="368" y="464" width="8" height="8"/>
+  <object id="16" type="nix" x="120" y="40" width="8" height="8"/>
+  <object id="17" type="nix" x="280" y="408" width="8" height="8"/>
+  <object id="18" type="nix" x="208" y="104" width="8" height="8"/>
+  <object id="19" type="nix" x="16" y="136" width="8" height="8"/>
+  <object id="20" type="nix" x="488" y="328" width="8" height="8"/>
+  <object id="21" type="nix" x="432" y="360" width="8" height="8"/>
+  <object id="23" type="nix" x="104" y="120" width="8" height="8"/>
+  <object id="24" type="nix" x="16" y="16" width="8" height="8"/>
+  <object id="25" type="nix" x="488" y="488" width="8" height="8"/>
+  <object id="26" type="nix" x="216" y="160" width="8" height="8"/>
+  <object id="27" type="nix" x="264" y="320" width="8" height="8"/>
+ </objectgroup>
+ <layer name="collisions" width="64" height="64" visible="0" opacity="0.6">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2XSw6DMAxEuWLvf5mqCySEWmo7z78kI7FoIRO/IQHzOo7jtfhBKpslm79jBp7KZtPyk9lkc2n56fURsU4r84/WFz2PB3+UqJw7Z3Bqdf5T1n02C/8p4rn667xXnbSo5+zdj5T33qu+t+l7JJ2vijrzE16W5xQxH+ExI//9vKRfoGpajf86vgq/xmO01kr8mvk8au3I31Gdaye0+Td/NH+lb4/oGqL6eqmk/Q/d45D9wojPrPxSXys/XTPtVZX/nyfpVZX/yXdEFr+Z+TVjNL5e94rMUztO401lcPemfDrxU7LWZNkrFfmtsq6XVflnkyd/h7USyV8xA7quq1/1d8ZHnvzX30QGVE9rvdaiUf5v60kzhrxWqqd+aeR9S9Qk/Z+Yi+aX9qmac9H8o36S6yzepLz4PRTFX1XV6/PW5u/HT9a8+Xv06V76x98xC839lPRq3TLQMGj4LRlkZKhh0PKT68kzlwh+r2N1fiqH7vzUWnhSNl92Btlsmz//eAOCm44sAEAAAA==
+  </data>
+ </layer>
+</map>

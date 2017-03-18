@@ -50,6 +50,10 @@ function renderBoat(boat)
     {
         SpriteBatch.drawSprite(soldierIcon, new Vector2(boat.position.x, boat.position.y - 16));
     }
+    if (boat.hasTank)
+    {
+        SpriteBatch.drawSprite(tankIcon, new Vector2(boat.position.x, boat.position.y - 16));
+    }
 }
 
 function updateBoat(boat, dt)
@@ -151,6 +155,12 @@ function updateBoat(boat, dt)
             --boat.availableMen;
             playSound("buysoldier.wav");
         }
+        if (Input.isJustDown(Key._2) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank)
+        {
+            boat.hasTank = true;
+            boat.availableMen -= 3;
+            playSound("buytank.wav");
+        }
     }
 
     // Drop/pickup troops
@@ -185,6 +195,41 @@ function updateBoat(boat, dt)
                             soldier.tileX = x;
                             soldier.tileY = y;
                             playSound("dropSoldier.wav");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        if (boat.hasTank)
+        {
+            var dropCenter = boat.position.div(8);
+            dropCenter.x = Math.floor(dropCenter.x);
+            dropCenter.y = Math.floor(dropCenter.y);
+            for (y = dropCenter.y - 1; y <= dropCenter.y + 1; ++y)
+            {
+                for (x = dropCenter.x - 1; x <= dropCenter.x + 1; ++x)
+                {
+                    var zoneId = tiledMap.getTileAt("Zones", x, y) - 80;
+                    if (zoneId >= 1)
+                    {
+                        var accept = true;
+                        for (var i = 0; i < droppedUnits.length; ++i)
+                        {
+                            var droppedUnit = droppedUnits[i];
+                            if (droppedUnit.tileX == x && droppedUnit.tileY == y)
+                            {
+                                accept = false;
+                                break;
+                            }
+                        }
+                        if (accept)
+                        {
+                            boat.hasTank = false;
+                            var tank = createTank(new Vector2(x * 8 + 4, y * 8 + 4));
+                            tank.tileX = x;
+                            tank.tileY = y;
+                            playSound("dropTank.wav");
                             return;
                         }
                     }

@@ -1,0 +1,10 @@
+<sheet texture="tank.png" spriteWidth="12" spriteHeight="12" originX="6" originY="8">
+  <anim name="idle_e" fps="6" loop="true">
+    <frame id="0"/>
+    <frame id="1"/>
+  </anim>
+  <anim name="idle_w" fps="6" loop="true">
+    <frame id="0" flipH="true"/>
+    <frame id="1" flipH="true"/>
+  </anim>
+</sheet>

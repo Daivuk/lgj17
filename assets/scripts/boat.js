@@ -12,6 +12,8 @@ sailSound.setVolume(0);
 sailSound.setLoop(true);
 sailSound.play();
 
+var hasManTexture = getTexture("hasMan.png", false);
+
 function createBoat(position)
 {
     var boat = {
@@ -19,10 +21,12 @@ function createBoat(position)
         position: new Vector2(position),
         angle: 0,
         slices: boatSlices,
-        render: renderSlices,
+        render: renderBoat,
         update: updateBoat,
         vel: 0,
-        index: 0
+        index: 0,
+        zone: new Rect(0, 0, 0, 0),
+        availableMen: 0
     }
     addEntity(boat);
     return boat;
@@ -34,6 +38,19 @@ var ToDeg = 180 / Math.PI;
 var BOAT_MAX_SPEED = 48;
 var BOAT_ACCELL = 32;
 var BOAT_DECELL = 16;
+
+function renderBoat(boat)
+{
+    renderSlices(boat);
+    if (boat.hasMan)
+    {
+        SpriteBatch.drawSprite(hasManTexture, new Vector2(boat.position.x, boat.position.y - 16));
+    }
+    if (boat.hasSoldier)
+    {
+        SpriteBatch.drawSprite(soldierIcon, new Vector2(boat.position.x, boat.position.y - 16));
+    }
+}
 
 function updateBoat(boat, dt)
 {
@@ -92,6 +109,7 @@ function updateBoat(boat, dt)
         if (dot > 0)
         {
             boat.vel += dt * BOAT_ACCELL * dot;
+            if (boat.vel < 0) boat.vel = 0;
             if (boat.vel > BOAT_MAX_SPEED) boat.vel = BOAT_MAX_SPEED;
         }
         else
@@ -112,8 +130,66 @@ function updateBoat(boat, dt)
         }
     }
 
-    if (boat.index == 0) sailSound.setVolume(boat.vel / BOAT_MAX_SPEED * .5);
+    if (boat.index == 0 || playerCount == 2) sailSound.setVolume(boat.vel / BOAT_MAX_SPEED * .5);
 
     var newPos = boat.position.add(dir.mul(dt * boat.vel));
     boat.position = tiledMap.collision(boat.position, newPos, Vector2.ONE);
+
+    // If boat arrives in zone and has man drop him, and allow to purchase army
+    if (boat.zone.contains(boat.position))
+    {
+        if (boat.hasMan && boat.availableMen < 5)
+        {
+            boat.hasMan = false;
+            boat.availableMen++;
+            if (boat.index == 0 || playerCount == 2) playSound("free.wav");
+        }
+
+        if (Input.isJustDown(Key._1) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank)
+        {
+            boat.hasSoldier = true;
+            --boat.availableMen;
+            playSound("buysoldier.wav");
+        }
+    }
+
+    // Drop/pickup troops
+    if (Input.isJustDown(Key.SPACE_BAR))
+    {
+        if (boat.hasSoldier)
+        {
+            var dropCenter = boat.position.div(8);
+            dropCenter.x = Math.floor(dropCenter.x);
+            dropCenter.y = Math.floor(dropCenter.y);
+            for (y = dropCenter.y - 1; y <= dropCenter.y + 1; ++y)
+            {
+                for (x = dropCenter.x - 1; x <= dropCenter.x + 1; ++x)
+                {
+                    var zoneId = tiledMap.getTileAt("Zones", x, y) - 80;
+                    if (zoneId >= 1)
+                    {
+                        var accept = true;
+                        for (var i = 0; i < droppedUnits.length; ++i)
+                        {
+                            var droppedUnit = droppedUnits[i];
+                            if (droppedUnit.tileX == x && droppedUnit.tileY == y)
+                            {
+                                accept = false;
+                                break;
+                            }
+                        }
+                        if (accept)
+                        {
+                            boat.hasSoldier = false;
+                            var soldier = createSoldier(new Vector2(x * 8 + 4, y * 8 + 4));
+                            soldier.tileX = x;
+                            soldier.tileY = y;
+                            playSound("dropSoldier.wav");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

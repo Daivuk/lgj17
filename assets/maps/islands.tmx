@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="8" tileheight="8" nextobjectid="28">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="8" tileheight="8" nextobjectid="30">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8">
   <image source="../textures/tileset.png" width="128" height="128"/>
   <terraintypes>
@@ -80,7 +80,7 @@
  </layer>
  <objectgroup name="Entities">
   <object id="1" type="player1" x="80" y="424" width="40" height="40"/>
-  <object id="2" type="player2" x="392" y="56" width="40" height="40"/>
+  <object id="2" type="player2_men" x="400" y="48" width="40" height="8"/>
   <object id="3" type="nix" x="368" y="72" width="8" height="8"/>
   <object id="4" type="nix" x="440" y="112" width="8" height="8"/>
   <object id="5" type="nix" x="64" y="400" width="8" height="8"/>
@@ -105,6 +105,8 @@
   <object id="25" type="nix" x="488" y="488" width="8" height="8"/>
   <object id="26" type="nix" x="216" y="160" width="8" height="8"/>
   <object id="27" type="nix" x="264" y="320" width="8" height="8"/>
+  <object id="28" type="player1_men" x="80" y="464" width="40" height="8"/>
+  <object id="29" type="player2" x="392" y="56" width="40" height="40"/>
  </objectgroup>
  <layer name="collisions" width="64" height="64" visible="0" opacity="0.6">
   <data encoding="base64" compression="gzip">

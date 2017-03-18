@@ -1,3 +1,5 @@
+getTexture("drowner.png", false);
+
 function createDrowner(position)
 {
     var drowner = {
@@ -13,6 +15,7 @@ function createDrowner(position)
 }
 
 var ATT_DIST = 80 * 80;
+var PICKUP_DIST = 10 * 10;
 
 function getAtt(entity, position)
 {
@@ -23,6 +26,20 @@ function getAtt(entity, position)
 
 function updateDrowner(drowner, dt)
 {
+    // Test for boat pickup
+    if (!player1.hasMan && !player1.hasSoldier && !player1.hasTank)
+    {
+        var distance = Vector2.distanceSquared(player1.position, drowner.position);
+        if (distance <= PICKUP_DIST)
+        {
+            playSound("save.wav");
+            removeEntity(drowner);
+            player1.hasMan = true;
+            return true;
+        }
+    }
+
+    // Scream for help
     drowner.helpDelay -= dt;
     if (drowner.helpDelay <= 0)
     {

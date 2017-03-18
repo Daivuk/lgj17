@@ -55,7 +55,7 @@ function update(dt)
     for (var i = 0; i < updatables.length; ++i)
     {
         var entity = updatables[i];
-        entity.update(entity, dt);
+        if (entity.update(entity, dt)) --i;
     }
 }
 
@@ -63,10 +63,15 @@ var clearColor = new Color(30 / 255, 80 / 255, 127 / 255);
 
 function render()
 {
+    var resolution = Renderer.getResolution();
     Renderer.clear(clearColor);
 
     cameraPos = new Vector2(player1.position);
-    var resolution = Renderer.getResolution();
+    var mapSizeInPixels = tiledMap.getSize().mul(8);
+    if (cameraPos.x < resolution.x / 2) cameraPos.x = resolution.x / 2;
+    if (cameraPos.x > mapSizeInPixels.x - resolution.x / 2) cameraPos.x = mapSizeInPixels.x - resolution.x / 2
+    if (cameraPos.y < resolution.y / 2) cameraPos.y = resolution.y / 2;
+    if (cameraPos.y > mapSizeInPixels.y - resolution.y / 2) cameraPos.y = mapSizeInPixels.y - resolution.y / 2
     var cameraMatrix = Matrix.createTranslation(new Vector3(-cameraPos.x, -cameraPos.y, 0));
     //cameraMatrix = cameraMatrix.mul(Matrix.createScale(4));
     cameraMatrix = cameraMatrix.mul(Matrix.createTranslation(new Vector3(resolution.x / 2, resolution.y / 2, 0)));
@@ -87,6 +92,16 @@ function render()
         entity.render(entity);
     }
 
+    // Draw men
+    for (var i = 0; i < player1.availableMen; ++i)
+    {
+        SpriteBatch.drawSprite(manIcon, player1.menPos.add(new Vector2(i * 8, 0)));
+    }
+    for (var i = 0; i < player2.availableMen; ++i)
+    {
+        SpriteBatch.drawSprite(manIcon, player2.menPos.add(new Vector2(i * 8, 0)));
+    }
+
     SpriteBatch.end();
 
     //--- UI
@@ -100,7 +115,10 @@ function render()
     }
     else
     {
-
+        var offset = new Vector2(resolution.x / 2 - 16, 0);
+        SpriteBatch.drawRect(minimap, new Rect(offset.x, offset.y, 32, 32));
+        SpriteBatch.drawSprite(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(minimap.getSize())).add(offset), new Color(1, .5, .5));
+        SpriteBatch.drawSprite(boaticon, player2.position.div(tiledMap.getSize().mul(8).div(minimap.getSize())).add(offset), new Color(.75, .75, 1));
     }
 
     SpriteBatch.end();

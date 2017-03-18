@@ -14,14 +14,24 @@ function initMap()
         switch (mapObj.type)
         {
             case "player1":
-                player1 = createBoat(mapObj.position.add(mapObj.size.mul(.5)));
+                if (!player1) player1 = createBoat(mapObj.position.add(mapObj.size.mul(.5)));
                 player1.angle = 270;
                 player1.index = 0;
+                player1.zone = new Rect(mapObj.position, mapObj.size);
                 break;
             case "player2":
-                player2 = createBoat(mapObj.position.add(mapObj.size.mul(.5)));
+                if (!player2) player2 = createBoat(mapObj.position.add(mapObj.size.mul(.5)));
                 player2.angle = 90;
                 player2.index = 1;
+                player2.zone = new Rect(mapObj.position, mapObj.size);
+                break;
+            case "player1_men":
+                if (!player1) player1 = createBoat(mapObj.position.add(mapObj.size.mul(.5)));
+                player1.menPos = mapObj.position.add(new Vector2(4, 4));
+                break;
+            case "player2_men":
+                if (!player2) player2 = createBoat(mapObj.position.add(mapObj.size.mul(.5)));
+                player2.menPos = mapObj.position.add(new Vector2(4, 4));
                 break;
             case "nix":
                 createDrowner(mapObj.position.add(mapObj.size.mul(.5)));

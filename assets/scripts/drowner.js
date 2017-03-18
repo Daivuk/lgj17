@@ -3,12 +3,11 @@ getTexture("drowner.png", false);
 function createDrowner(position)
 {
     var drowner = {
-        position: position,
+        position: new Vector2(position),
         sprite: playSpriteAnim("drowner.spriteanim", "idle", Random.getNext(14)),
         update: updateDrowner,
         render: renderSprite,
-        helpDelay: Random.getNext(3) + 2,
-        pitch: Random.getNext(10) / 20 + 1.0
+        helpDelay: Random.getNext(3) + 2
     }
     addEntity(drowner);
     return drowner;
@@ -24,19 +23,34 @@ function getAtt(entity, position)
     return 1 - (distance / ATT_DIST);
 }
 
-function updateDrowner(drowner, dt)
+function doPickup(drowner, player)
 {
-    // Test for boat pickup
-    if (!player1.hasMan && !player1.hasSoldier && !player1.hasTank)
+    if (!player.hasMan && !player.hasSoldier && !player.hasTank)
     {
-        var distance = Vector2.distanceSquared(player1.position, drowner.position);
+        var distance = Vector2.distanceSquared(player.position, drowner.position);
         if (distance <= PICKUP_DIST)
         {
             playSound("save.wav");
             removeEntity(drowner);
-            player1.hasMan = true;
+            player.hasMan = true;
             return true;
         }
+    }
+    return false; 
+}
+
+function updateDrowner(drowner, dt)
+{
+    // Test for boat pickup, randomly chose player 1 or 2 first so we don't advantage one
+    if (Random.getNext(2) == 0)
+    {
+        if (doPickup(drowner, player1)) return true;
+        if (doPickup(drowner, player2)) return true;
+    }
+    else
+    {
+        if (doPickup(drowner, player2)) return true;
+        if (doPickup(drowner, player1)) return true;
     }
 
     // Scream for help
@@ -51,7 +65,7 @@ function updateDrowner(drowner, dt)
         if (vol > 1) vol = 1;
         if (vol > 0)
         {
-            playSound("help" + (Random.getNext(2) + 1) + ".wav", vol * .35, 0, drowner.pitch);
+            playSound("help" + (Random.getNext(2) + 1) + ".wav", vol * .15);
         }
     }
 }

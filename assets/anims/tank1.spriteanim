@@ -1,4 +1,4 @@
-<sheet texture="tank.png" spriteWidth="12" spriteHeight="12" originX="6" originY="8">
+<sheet texture="tank1.png" spriteWidth="16" spriteHeight="16" originX="8" originY="10">
   <anim name="idle_e" fps="6" loop="true">
     <frame id="0"/>
     <frame id="1"/>

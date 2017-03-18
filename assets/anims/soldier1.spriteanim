@@ -1,0 +1,22 @@
+<sheet texture="soldier1.png" spriteWidth="8" spriteHeight="8" originX="4" originY="6">
+  <anim name="idle_e" fps="3" loop="true">
+    <frame id="0" repeat="4"/>
+    <frame id="3" repeat="2"/>
+    <frame id="0" repeat="6"/>
+    <frame id="1"/>
+    <frame id="2" repeat="3"/>
+    <frame id="1"/>
+    <frame id="0"/>
+    <frame id="3" repeat="3"/>
+  </anim>
+  <anim name="idle_w" fps="3" loop="true">
+    <frame id="0" repeat="4" flipH="true"/>
+    <frame id="3" repeat="2" flipH="true"/>
+    <frame id="0" repeat="6" flipH="true"/>
+    <frame id="1" flipH="true"/>
+    <frame id="2" repeat="3" flipH="true"/>
+    <frame id="1" flipH="true"/>
+    <frame id="0" flipH="true"/>
+    <frame id="3" repeat="3" flipH="true"/>
+  </anim>
+</sheet>

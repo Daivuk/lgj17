@@ -1,5 +1,8 @@
-var boatTexture = getTexture("boat.png", false);
-var boatTextureH = boatTexture.getSize().y;
+var boatTextures = [
+    getTexture("boat1.png", false),
+    getTexture("boat2.png", false)
+];
+var boatTextureH = boatTextures[0].getSize().y;
 var boatSpriteSizeY = boatTextureH / 10;
 var boatSlices = [];
 for (var i = 0; i < 10; ++i)
@@ -7,24 +10,30 @@ for (var i = 0; i < 10; ++i)
     boatSlices.push(new Vector4(0, i * boatSpriteSizeY / boatTextureH, 1, (i + 1) * boatSpriteSizeY / boatTextureH));
 }
 
-var sailSound = getSound("sail.wav").createInstance();
-sailSound.setVolume(0);
-sailSound.setLoop(true);
-sailSound.play();
+var sailSound = [
+    getSound("sail.wav").createInstance(),
+    getSound("sail.wav").createInstance()
+];
+sailSound[0].setVolume(0);
+sailSound[0].setLoop(true);
+sailSound[0].play();
+sailSound[1].setVolume(0);
+sailSound[1].setLoop(true);
+sailSound[1].play();
 
 var hasManTexture = getTexture("hasMan.png", false);
 
-function createBoat(position)
+function createBoat(position, in_index)
 {
     var boat = {
-        texture: boatTexture,
+        texture: boatTextures[in_index],
         position: new Vector2(position),
         angle: 0,
         slices: boatSlices,
         render: renderBoat,
         update: updateBoat,
         vel: 0,
-        index: 0,
+        index: in_index,
         zone: new Rect(0, 0, 0, 0),
         availableMen: 0
     }
@@ -60,14 +69,11 @@ function updateBoat(boat, dt)
 {
     var desiredDir = new Vector2(0, 0);
     var dir = new Vector2(Math.cos(boat.angle * ToRad), Math.sin(boat.angle * ToRad));
-    
-    if (boat.index == 0)
-    {
-        if (Input.isDown(Key.D)) desiredDir.x += 1;
-        if (Input.isDown(Key.A)) desiredDir.x -= 1;
-        if (Input.isDown(Key.S)) desiredDir.y += 1;
-        if (Input.isDown(Key.W)) desiredDir.y -= 1;
-    }
+
+    if (Input.isDown(boat.keys.Right)) desiredDir.x += 1;
+    if (Input.isDown(boat.keys.Left)) desiredDir.x -= 1;
+    if (Input.isDown(boat.keys.Down)) desiredDir.y += 1;
+    if (Input.isDown(boat.keys.Up)) desiredDir.y -= 1;
 
     if (desiredDir.lengthSquared() > 0)
     {
@@ -134,7 +140,7 @@ function updateBoat(boat, dt)
         }
     }
 
-    if (boat.index == 0 || playerCount == 2) sailSound.setVolume(boat.vel / BOAT_MAX_SPEED * .5);
+    if (boat.index == 0 || playerCount == 2) sailSound[boat.index].setVolume(boat.vel / BOAT_MAX_SPEED * .5);
 
     var newPos = boat.position.add(dir.mul(dt * boat.vel));
     boat.position = tiledMap.collision(boat.position, newPos, Vector2.ONE);
@@ -149,13 +155,13 @@ function updateBoat(boat, dt)
             if (boat.index == 0 || playerCount == 2) playSound("free.wav");
         }
 
-        if (Input.isJustDown(Key._1) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank)
+        if (Input.isJustDown(boat.keys.BuySoldier) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank)
         {
             boat.hasSoldier = true;
             --boat.availableMen;
             playSound("buysoldier.wav");
         }
-        if (Input.isJustDown(Key._2) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank)
+        if (Input.isJustDown(boat.keys.BuyTank) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank)
         {
             boat.hasTank = true;
             boat.availableMen -= 3;
@@ -164,7 +170,7 @@ function updateBoat(boat, dt)
     }
 
     // Drop/pickup troops
-    if (Input.isJustDown(Key.SPACE_BAR))
+    if (Input.isJustDown(boat.keys.Drop))
     {
         if (boat.hasSoldier)
         {
@@ -175,7 +181,7 @@ function updateBoat(boat, dt)
             {
                 for (x = dropCenter.x - 1; x <= dropCenter.x + 1; ++x)
                 {
-                    var zoneId = tiledMap.getTileAt("Zones", x, y) - 80;
+                    var zoneId = tiledMap.getTileAt("Zones", x, y) - 81;
                     if (zoneId >= 1)
                     {
                         var accept = true;
@@ -191,10 +197,11 @@ function updateBoat(boat, dt)
                         if (accept)
                         {
                             boat.hasSoldier = false;
-                            var soldier = createSoldier(new Vector2(x * 8 + 4, y * 8 + 4));
+                            var soldier = createSoldier(new Vector2(x * 8 + 4, y * 8 + 4), boat.index);
                             soldier.tileX = x;
                             soldier.tileY = y;
                             playSound("dropSoldier.wav");
+                            zones[zoneId].count[boat.index] += 1;
                             return;
                         }
                     }
@@ -210,7 +217,7 @@ function updateBoat(boat, dt)
             {
                 for (x = dropCenter.x - 1; x <= dropCenter.x + 1; ++x)
                 {
-                    var zoneId = tiledMap.getTileAt("Zones", x, y) - 80;
+                    var zoneId = tiledMap.getTileAt("Zones", x, y) - 81;
                     if (zoneId >= 1)
                     {
                         var accept = true;
@@ -226,10 +233,11 @@ function updateBoat(boat, dt)
                         if (accept)
                         {
                             boat.hasTank = false;
-                            var tank = createTank(new Vector2(x * 8 + 4, y * 8 + 4));
+                            var tank = createTank(new Vector2(x * 8 + 4, y * 8 + 4), boat.index);
                             tank.tileX = x;
                             tank.tileY = y;
                             playSound("dropTank.wav");
+                            zones[zoneId].count[boat.index] += 3;
                             return;
                         }
                     }

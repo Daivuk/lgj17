@@ -48,6 +48,8 @@ var BOAT_MAX_SPEED = 48;
 var BOAT_ACCELL = 32;
 var BOAT_DECELL = 16;
 
+var PICKUP_DIST = 12 * 12;
+
 function renderBoat(boat)
 {
     renderSlices(boat);
@@ -201,6 +203,9 @@ function updateBoat(boat, dt)
                             soldier.tileX = x;
                             soldier.tileY = y;
                             playSound("dropSoldier.wav");
+                            soldier.worth = 1;
+                            soldier.zoneId = zoneId;
+                            soldier.isSoldier = true;
                             zones[zoneId].count[boat.index] += 1;
                             return;
                         }
@@ -208,7 +213,7 @@ function updateBoat(boat, dt)
                 }
             }
         }
-        if (boat.hasTank)
+        else if (boat.hasTank)
         {
             var dropCenter = boat.position.div(8);
             dropCenter.x = Math.floor(dropCenter.x);
@@ -237,11 +242,40 @@ function updateBoat(boat, dt)
                             tank.tileX = x;
                             tank.tileY = y;
                             playSound("dropTank.wav");
+                            tank.zoneId = zoneId;
+                            tank.worth = 3;
+                            tank.isTank = true;
                             zones[zoneId].count[boat.index] += 3;
                             return;
                         }
                     }
                 }
+            }
+        }
+        else if (!boat.hasMan)
+        {
+            var closest = PICKUP_DIST;
+            var picked = null;
+            for (var i = 0; i < droppedUnits.length; ++i)
+            {
+                var unit = droppedUnits[i];
+                if (unit.index != boat.index) continue;
+                var dist = Vector2.distanceSquared(unit.position, boat.position);
+                if (dist < closest)
+                {
+                    picked = unit;
+                    closest = dist;
+                }
+            }
+            if (picked)
+            {
+                zones[picked.zoneId].count[boat.index] -= picked.worth;
+                droppedUnits.splice(droppedUnits.indexOf(picked), 1);
+                removeEntity(picked);
+                boat.hasSoldier = picked.isSoldier;
+                boat.hasTank = picked.isTank;
+                if (boat.hasSoldier) playSound("buysoldier.wav");
+                if (boat.hasTank) playSound("buytank.wav");
             }
         }
     }

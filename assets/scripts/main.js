@@ -15,11 +15,11 @@ function addEntity(entity)
     entities.push(entity);
 }
 
+var toRemoveEntities = [];
+
 function removeEntity(entity)
 {
-    if (entity.sprite) renderables.splice(renderables.indexOf(entity), 1);
-    if (entity.update) updatables.splice(updatables.indexOf(entity), 1);
-    entities.splice(entities.indexOf(entity), 1);
+    toRemoveEntities.push(entity);
 }
 
 function renderSlices(entity)
@@ -58,6 +58,15 @@ function update(dt)
         var entity = updatables[i];
         if (entity.update(entity, dt)) --i;
     }
+
+    for (var i = 0; i < toRemoveEntities.length; ++i)
+    {
+        var entity = toRemoveEntities[i];
+        if (entity.sprite) renderables.splice(renderables.indexOf(entity), 1);
+        if (entity.update) updatables.splice(updatables.indexOf(entity), 1);
+        entities.splice(entities.indexOf(entity), 1);
+    }
+    toRemoveEntities = [];
 
     flagFlash += dt;
     while (flagFlash > .6) flagFlash -= .6;

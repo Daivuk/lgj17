@@ -54,7 +54,7 @@ function updateDrowner(drowner, dt)
     }
 
     // Scream for help
-    drowner.helpDelay -= dt;
+ /*   drowner.helpDelay -= dt;
     if (drowner.helpDelay <= 0)
     {
         drowner.helpDelay = Random.getNext(3) + 2;
@@ -67,5 +67,5 @@ function updateDrowner(drowner, dt)
         {
             playSound("help" + (Random.getNext(2) + 1) + ".wav", vol * .15);
         }
-    }
+    }*/
 }

@@ -1,10 +1,10 @@
 var tiledMapTexture = getTexture("tileset.png", false);
-var tiledMap = getTiledMap("islands.tmx");
+var tiledMap;
 var minimap = getTexture("tileset.png", false);
 var minimapUVs = new Vector4(.25, .5, .5, .75);
 var boaticon = getTexture("tileset.png", false);
 var boatIconUVs = new Vector4(3 / 16, 12 / 16, 4 / 16, 13 / 16);
-var zonesLayer = tiledMap.getLayerIndex("Zones");
+var zonesLayer;
 
 var zones = {};
 var zonesArr = [];
@@ -51,6 +51,18 @@ var player2XArcadeKeys = {
 
 function initMap()
 {
+    tiledMap = getFreshTiledMap("islands.tmx");
+    entities = [];
+    renderables = [];
+    updatables = [];
+    droppedUnits = [];
+    score = [0, 0];
+    zones = {};
+    zonesArr = [];
+    zonesLayer = tiledMap.getLayerIndex("Zones");
+    player1 = null;
+    player2 = null;
+
     var entityLayer = tiledMap.getLayerIndex("Entities");
     var entityCount = tiledMap.getObjectCount(entityLayer);
     for (var i = 0; i < entityCount; ++i)

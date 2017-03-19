@@ -14,6 +14,15 @@ var score = [0, 0];
 
 var whiteUVs = new Vector4(15 / 16, 1 / 16, 15 / 16, 1 / 16);
 
+var GAME_STATE_INPUT_SELECT = 0;
+var GAME_STATE_MAIN_MENU = 1;
+var GAME_STATE_NEW_GAME = 2;
+var GAME_STATE_GAME = 3;
+var GAME_STATE_END_GAME = 4;
+var GAME_STATE_VIDEO = 5;
+var GAME_STATE_KEYS = 6;
+var gameState = GAME_STATE_INPUT_SELECT;
+
 function addEntity(entity)
 {
     if (entity.update) updatables.push(entity);
@@ -50,31 +59,104 @@ function renderSprite(entity)
     SpriteBatch.drawSpriteAnim(entity.sprite, entity.position);
 }
 
-initMap();
+initMenus();
+showMenu("key");
 
 function update(dt)
 {
-    if (Input.isJustDown(Key.ESCAPE))
+    switch (gameState)
     {
-        quit();
-        return;
-    }
+        case GAME_STATE_GAME:
+            if (Input.isJustDown(Key.ESCAPE))
+            {
+                quit();
+                return;
+            }
 
-    //--- Entities
-    for (var i = 0; i < updatables.length; ++i)
-    {
-        var entity = updatables[i];
-        entity.update(entity, dt);
-    }
+            //--- Entities
+            for (var i = 0; i < updatables.length; ++i)
+            {
+                var entity = updatables[i];
+                entity.update(entity, dt);
+            }
 
-    for (var i = 0; i < toRemoveEntities.length; ++i)
-    {
-        var entity = toRemoveEntities[i];
-        if (entity.sprite) renderables.splice(renderables.indexOf(entity), 1);
-        if (entity.update) updatables.splice(updatables.indexOf(entity), 1);
-        entities.splice(entities.indexOf(entity), 1);
+            for (var i = 0; i < toRemoveEntities.length; ++i)
+            {
+                var entity = toRemoveEntities[i];
+                if (entity.sprite) renderables.splice(renderables.indexOf(entity), 1);
+                if (entity.update) updatables.splice(updatables.indexOf(entity), 1);
+                entities.splice(entities.indexOf(entity), 1);
+            }
+            toRemoveEntities = [];
+            break;
+        default:
+            var index = updateMenu();
+            if (index != -1)
+            {
+                switch (gameState)
+                {
+                    case GAME_STATE_INPUT_SELECT:
+                        switch (index)
+                        {
+                            case 0:
+                                useXArcadeInput = false;
+                                gameState = GAME_STATE_MAIN_MENU;
+                                showMenu("menu");
+                                break;
+                            case 1:
+                                useXArcadeInput = true;
+                                gameState = GAME_STATE_MAIN_MENU;
+                                showMenu("menu");
+                                break;
+                        }
+                        break;
+                    case GAME_STATE_MAIN_MENU:
+                        switch (index)
+                        {
+                            case 0:
+                                gameState = GAME_STATE_NEW_GAME;
+                                showMenu("player");
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                quit();
+                                break;
+                            case -2:
+                                gameState = GAME_STATE_INPUT_SELECT;
+                                showMenu("key");
+                                break; 
+                        }
+                        break;
+                    case GAME_STATE_NEW_GAME:
+                        switch (index)
+                        {
+                            case 0:
+                                playerCount = 1;
+                                gameState = GAME_STATE_GAME;
+                                initMap();
+                                break;
+                            case 1:
+                                playerCount = 2;
+                                gameState = GAME_STATE_GAME;
+                                initMap();
+                                break;
+                            case -2:
+                                gameState = GAME_STATE_MAIN_MENU;
+                                showMenu("menu");
+                                break;
+                        }
+                        break;
+/*
+var GAME_STATE_END_GAME = 4;
+var GAME_STATE_VIDEO = 5;
+var GAME_STATE_KEYS = 6;*/
+                }
+            }
+            break;
     }
-    toRemoveEntities = [];
 
     flagFlash += dt;
     while (flagFlash > .6) flagFlash -= .6;
@@ -212,52 +294,60 @@ var midLineRect = new Rect(resolution.x / 2 - 1, 0, 2, resolution.y);
 
 function render()
 {
-    // Sort renderable top first
-    renderables.sort(function(a, b){return a.position.y < b.position.y ? -1 : 1});
-    if (playerCount == 1)
+    switch (gameState)
     {
-        renderWorld(player1, fullViewport);
+        case GAME_STATE_GAME:
+            // Sort renderable top first
+            renderables.sort(function(a, b){return a.position.y < b.position.y ? -1 : 1});
+            if (playerCount == 1)
+            {
+                renderWorld(player1, fullViewport);
+            }
+            else
+            {
+                renderWorld(player1, leftViewport);
+                renderWorld(player2, rightViewport);
+                SpriteBatch.begin();
+                SpriteBatch.drawRectWithUVs(minimap, midLineRect, whiteUVs, Color.BLACK);
+                SpriteBatch.end();
+            }
+
+            //--- UI
+            SpriteBatch.begin();
+
+            var offset = new Vector2(0, 0);
+            if (playerCount == 2)
+            {
+                offset.x = resolution.x / 2 - 16;
+            }
+
+            //--- Minimap
+            SpriteBatch.drawRectWithUVs(minimap, new Rect(offset.x, offset.y, 32, 32), minimapUVs);
+
+            if (playerCount == 1)
+            {
+                SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)), boatIconUVs);
+            }
+            else
+            {
+                SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, blueColor);
+                SpriteBatch.drawSpriteWithUVs(boaticon, player2.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, redColor);
+            }
+
+            for (var i = 0; i < zonesArr.length; ++i)
+            {
+                dragMinimapFlag(zonesArr[i].flag, offset);
+            }
+
+            //--- Score board
+            SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 - 32, resolution.y - 8, 64, 8), whiteUVs, Color.BLACK);
+            SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 - score[0] * 31 - 1, resolution.y - 7, score[0] * 30, 6), whiteUVs, blueColor);
+            SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 + 1, resolution.y - 7, score[1] * 31, 6), whiteUVs, redColor);
+
+            SpriteBatch.end();
+            break;
+        default:
+            drawMenu();
+            break;
     }
-    else
-    {
-        renderWorld(player1, leftViewport);
-        renderWorld(player2, rightViewport);
-        SpriteBatch.begin();
-        SpriteBatch.drawRectWithUVs(minimap, midLineRect, whiteUVs, Color.BLACK);
-        SpriteBatch.end();
-    }
-
-    //--- UI
-    SpriteBatch.begin();
-
-    var offset = new Vector2(0, 0);
-    if (playerCount == 2)
-    {
-        offset.x = resolution.x / 2 - 16;
-    }
-
-    //--- Minimap
-    SpriteBatch.drawRectWithUVs(minimap, new Rect(offset.x, offset.y, 32, 32), minimapUVs);
-
-    if (playerCount == 1)
-    {
-        SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)), boatIconUVs);
-    }
-    else
-    {
-        SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, blueColor);
-        SpriteBatch.drawSpriteWithUVs(boaticon, player2.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, redColor);
-    }
-
-    for (var i = 0; i < zonesArr.length; ++i)
-    {
-        dragMinimapFlag(zonesArr[i].flag, offset);
-    }
-
-    //--- Score board
-    SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 - 32, resolution.y - 8, 64, 8), whiteUVs, Color.BLACK);
-    SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 - score[0] * 31 - 1, resolution.y - 7, score[0] * 30, 6), whiteUVs, blueColor);
-    SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 + 1, resolution.y - 7, score[1] * 31, 6), whiteUVs, redColor);
-
-    SpriteBatch.end();
 }

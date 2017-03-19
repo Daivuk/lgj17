@@ -72,10 +72,23 @@ function updateBoat(boat, dt)
     var desiredDir = new Vector2(0, 0);
     var dir = new Vector2(Math.cos(boat.angle * ToRad), Math.sin(boat.angle * ToRad));
 
-    if (Input.isDown(boat.keys.Right)) desiredDir.x += 1;
-    if (Input.isDown(boat.keys.Left)) desiredDir.x -= 1;
-    if (Input.isDown(boat.keys.Down)) desiredDir.y += 1;
-    if (Input.isDown(boat.keys.Up)) desiredDir.y -= 1;
+    var buySoldier = false;
+    var buyTank = false;
+    var pickup = false;
+    if (playerCount == 1 && boat.index == 1)
+    {
+
+    }
+    else
+    {
+        if (Input.isDown(boat.keys.Right)) desiredDir.x += 1;
+        if (Input.isDown(boat.keys.Left)) desiredDir.x -= 1;
+        if (Input.isDown(boat.keys.Down)) desiredDir.y += 1;
+        if (Input.isDown(boat.keys.Up)) desiredDir.y -= 1;
+        buySoldier = (Input.isJustDown(boat.keys.BuySoldier) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank);
+        buyTank = (Input.isJustDown(boat.keys.BuyTank) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank);
+        pickup = Input.isJustDown(boat.keys.Drop);
+    }
 
     if (desiredDir.lengthSquared() > 0)
     {
@@ -157,13 +170,13 @@ function updateBoat(boat, dt)
             if (boat.index == 0 || playerCount == 2) playSound("free.wav");
         }
 
-        if (Input.isJustDown(boat.keys.BuySoldier) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank)
+        if (buySoldier)
         {
             boat.hasSoldier = true;
             --boat.availableMen;
             playSound("buysoldier.wav");
         }
-        if (Input.isJustDown(boat.keys.BuyTank) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank)
+        if (buyTank)
         {
             boat.hasTank = true;
             boat.availableMen -= 3;
@@ -172,7 +185,7 @@ function updateBoat(boat, dt)
     }
 
     // Drop/pickup troops
-    if (Input.isJustDown(boat.keys.Drop))
+    if (pickup)
     {
         if (boat.hasSoldier)
         {

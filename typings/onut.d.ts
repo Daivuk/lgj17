@@ -661,7 +661,7 @@ declare class SpriteAnim {
     createInstance(): SpriteAnimInstance;
 }
 /** Same as TiledMap.createFromFile */
-declare function getTiledMap(filename: string): SpriteAnim;
+declare function getSpriteAnim(filename: string): SpriteAnim;
 
 // SpriteAnimInstance
 declare class SpriteAnimInstance {

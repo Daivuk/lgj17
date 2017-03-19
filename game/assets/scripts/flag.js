@@ -1,14 +1,18 @@
-var flagPoleTexture = getTexture("flagPole.png", false);
-var flagTexture = getTexture("flag.png", false);
-var flagIcon = getTexture("flagIcon.png", false);
+var flagPoleTexture = getTexture("tileset.png", false);
+var flagTexture = getTexture("tileset.png", false);
+var flagIcon = getTexture("tileset.png", false);
+var flagIconUVs = new Vector4(1 / 16, 12 / 16, 2 / 16, 13 / 16);
 
 var FLAG_CAPTURE_SPEED = .10;
+var FLAG_POINT_SPEED = .002;
 
 function createFlagPole(position)
 {
     var flagPole = {
         position: new Vector2(position),
+        drawPos: position.sub(new Vector2(0, 9)),
         texture: flagPoleTexture,
+        uvs: new Vector4(3 / 16, .5, .25, 11 / 16),
         render: drawFlagPole
     };
     addEntity(flagPole);
@@ -17,7 +21,7 @@ function createFlagPole(position)
 
 function drawFlagPole(flagPole)
 {
-    SpriteBatch.drawSprite(flagPole.texture, flagPole.position.sub(new Vector2(0, 9)));
+    SpriteBatch.drawSpriteWithUVs(flagPole.texture, flagPole.drawPos, flagPole.uvs);
 }
 
 function createFlag(position, zone)
@@ -77,6 +81,10 @@ function updateFlag(flag, dt)
                         playSound("capture.wav");
                     }
                 }
+                else
+                {
+                    score[0] += dt * FLAG_POINT_SPEED;
+                }
             }
             else
             {
@@ -101,6 +109,10 @@ function updateFlag(flag, dt)
                         flag.percent = 1;
                         playSound("capture.wav");
                     }
+                }
+                else
+                {
+                    score[1] += dt * FLAG_POINT_SPEED;
                 }
             }
             else

@@ -1,0 +1,22 @@
+<sheet texture="tileset.png" spriteWidth="8" spriteHeight="8" originX="4" originY="6">
+  <anim name="idle_e" fps="3" loop="true">
+    <frame id="240" repeat="4"/>
+    <frame id="243" repeat="2"/>
+    <frame id="240" repeat="6"/>
+    <frame id="241"/>
+    <frame id="242" repeat="3"/>
+    <frame id="241"/>
+    <frame id="240"/>
+    <frame id="243" repeat="3"/>
+  </anim>
+  <anim name="idle_w" fps="3" loop="true">
+    <frame id="240" repeat="4" flipH="true"/>
+    <frame id="243" repeat="2" flipH="true"/>
+    <frame id="240" repeat="6" flipH="true"/>
+    <frame id="241" flipH="true"/>
+    <frame id="242" repeat="3" flipH="true"/>
+    <frame id="241" flipH="true"/>
+    <frame id="240" flipH="true"/>
+    <frame id="243" repeat="3" flipH="true"/>
+  </anim>
+</sheet>

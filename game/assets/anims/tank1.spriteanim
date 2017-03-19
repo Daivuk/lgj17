@@ -1,0 +1,10 @@
+<sheet texture="tileset.png" spriteWidth="16" spriteHeight="16" originX="8" originY="10">
+  <anim name="idle_e" fps="6" loop="true">
+    <frame id="50"/>
+    <frame id="51"/>
+  </anim>
+  <anim name="idle_w" fps="6" loop="true">
+    <frame id="50" flipH="true"/>
+    <frame id="51" flipH="true"/>
+  </anim>
+</sheet>

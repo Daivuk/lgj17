@@ -1,13 +1,15 @@
 var boatTextures = [
-    getTexture("boat1.png", false),
-    getTexture("boat2.png", false)
+    getTexture("tileset.png", false),
+    getTexture("tileset.png", false)
 ];
-var boatTextureH = boatTextures[0].getSize().y;
-var boatSpriteSizeY = boatTextureH / 10;
-var boatSlices = [];
+var boatSlices = [[],[]];
 for (var i = 0; i < 10; ++i)
 {
-    boatSlices.push(new Vector4(0, i * boatSpriteSizeY / boatTextureH, 1, (i + 1) * boatSpriteSizeY / boatTextureH));
+    boatSlices[0].push(new Vector4(.5, .375 + i * .0625, .625, .375 + (i + 1) * .0625));
+}
+for (var i = 0; i < 10; ++i)
+{
+    boatSlices[1].push(new Vector4(.625, .375 + i * .0625, .75, .375 + (i + 1) * .0625));
 }
 
 var sailSound = [
@@ -21,15 +23,13 @@ sailSound[1].setVolume(0);
 sailSound[1].setLoop(true);
 sailSound[1].play();
 
-var hasManTexture = getTexture("hasMan.png", false);
-
 function createBoat(position, in_index)
 {
     var boat = {
         texture: boatTextures[in_index],
         position: new Vector2(position),
         angle: 0,
-        slices: boatSlices,
+        slices: boatSlices[in_index],
         render: renderBoat,
         update: updateBoat,
         vel: 0,
@@ -55,15 +55,15 @@ function renderBoat(boat)
     renderSlices(boat);
     if (boat.hasMan)
     {
-        SpriteBatch.drawSprite(hasManTexture, new Vector2(boat.position.x, boat.position.y - 16));
+        SpriteBatch.drawSpriteWithUVs(hasManTexture, new Vector2(boat.position.x, boat.position.y - 16), hasManIconUVs);
     }
     if (boat.hasSoldier)
     {
-        SpriteBatch.drawSprite(soldierIcon, new Vector2(boat.position.x, boat.position.y - 16));
+        SpriteBatch.drawSpriteWithUVs(soldierIcon, new Vector2(boat.position.x, boat.position.y - 16), soldierIconUVs);
     }
     if (boat.hasTank)
     {
-        SpriteBatch.drawSprite(tankIcon, new Vector2(boat.position.x, boat.position.y - 16));
+        SpriteBatch.drawSpriteWithUVs(tankIcon, new Vector2(boat.position.x, boat.position.y - 16), tankIconUVs);
     }
 }
 

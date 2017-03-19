@@ -1,4 +1,4 @@
-getTexture("drowner.png", false);
+getTexture("tileset.png", false);
 
 function createDrowner(position)
 {

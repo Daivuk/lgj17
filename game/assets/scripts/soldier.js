@@ -1,7 +1,8 @@
-var soldierIcon = getTexture("soldiericon.png", false);
+var soldierIcon = getTexture("tileset.png", false);
+var soldierIconUVs = new Vector4(2 / 16, 8 / 16, 3 / 16, 9 / 16);
 var soldierTextures = [
-    getTexture("soldier1.png", false),
-    getTexture("soldier2.png", false),
+    getTexture("tileset.png", false),
+    getTexture("tileset.png", false),
 ]
 
 var droppedUnits = [];

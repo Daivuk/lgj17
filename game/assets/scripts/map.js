@@ -1,7 +1,9 @@
 var tiledMapTexture = getTexture("tileset.png", false);
 var tiledMap = getTiledMap("islands.tmx");
-var minimap = getTexture("minimap.png", false);
-var boaticon = getTexture("boaticon.png", false);
+var minimap = getTexture("tileset.png", false);
+var minimapUVs = new Vector4(.25, .5, .5, .75);
+var boaticon = getTexture("tileset.png", false);
+var boatIconUVs = new Vector4(3 / 16, 12 / 16, 4 / 16, 13 / 16);
 var zonesLayer = tiledMap.getLayerIndex("Zones");
 
 var zones = {};
@@ -62,7 +64,10 @@ function initMap()
                 player1.position = new Vector2(midPos);
                 player1.angle = 270;
                 player1.index = 0;
-                player1.keys = player1KeyboardKeys;
+                if (System.getPlatform() == Platform.RASPBERRY_PI)
+                    player1.keys = player1XArcadeKeys;
+                else
+                    player1.keys = player1KeyboardKeys;
                 player1.zone = new Rect(mapObj.position, mapObj.size);
                 break;
             case "player2":
@@ -70,7 +75,10 @@ function initMap()
                 player2.position = new Vector2(midPos);
                 player2.angle = 90;
                 player2.index = 1;
-                player2.keys = player2KeyboardKeys;
+                if (System.getPlatform() == Platform.RASPBERRY_PI)
+                    player2.keys = player2XArcadeKeys;
+                else
+                    player2.keys = player2KeyboardKeys;
                 player2.zone = new Rect(mapObj.position, mapObj.size);
                 break;
             case "player1_men":
@@ -98,6 +106,7 @@ function initMap()
             };
             createFlagPole(zone.position);
             zone.flag = createFlag(zone.position, zone);
+            zone.flag.minimapPos = midPos.div(tiledMap.getSize().mul(8).div(32));
             zones[index] = zone;
             zonesArr.push(zone);
         }

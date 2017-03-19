@@ -1,7 +1,8 @@
-var tankIcon = getTexture("tankicon.png", false);
+var tankIcon = getTexture("tileset.png", false);
+var tankIconUVs = new Vector4(2 / 16, 9 / 16, 3 / 16, 10 / 16);
 var tankTextures = [
-    getTexture("tank1.png", false),
-    getTexture("tank2.png", false)
+    getTexture("tileset.png", false),
+    getTexture("tileset.png", false)
 ]
 
 function createTank(position, index)

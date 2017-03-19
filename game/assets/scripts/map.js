@@ -76,7 +76,7 @@ function initMap()
                 player1.position = new Vector2(midPos);
                 player1.angle = 270;
                 player1.index = 0;
-                if (System.getPlatform() == Platform.RASPBERRY_PI)
+                if (useXArcadeInput)
                     player1.keys = player1XArcadeKeys;
                 else
                     player1.keys = player1KeyboardKeys;
@@ -87,7 +87,7 @@ function initMap()
                 player2.position = new Vector2(midPos);
                 player2.angle = 90;
                 player2.index = 1;
-                if (System.getPlatform() == Platform.RASPBERRY_PI)
+                if (useXArcadeInput)
                     player2.keys = player2XArcadeKeys;
                 else
                     player2.keys = player2KeyboardKeys;

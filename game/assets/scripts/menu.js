@@ -8,8 +8,10 @@ var menuCursorAnim = new NumberAnim(-1);
 var menuNavigationKeys = {
     Up1: Key.W,
     Up2: Key.XARCADE_LJOY_UP,
+    Up3: Key.UP,
     Down1: Key.S,
     Down2: Key.XARCADE_LJOY_DOWN,
+    Down3: Key.DOWN,
     Enter1: Key.ENTER,
     Enter2: Key.XARCADE_LBUTTON_1,
     Back1: Key.ESCAPE,
@@ -56,6 +58,15 @@ function showMenu(name)
         case "end":
             menuOffset = new Vector2(32 * 8, 20 * 8);
             break;
+        case "keys":
+            if (useXArcadeInput)
+                menuOffset = new Vector2(32 * 8, 40 * 8);
+            else
+                menuOffset = new Vector2(0, 40 * 8);
+            break;
+        case "video":
+            menuOffset = new Vector2(0, 60 * 8);
+            break;
     }
 }
 
@@ -71,13 +82,15 @@ function updateMenu(dt)
         return;
     }
     if (Input.isJustDown(menuNavigationKeys.Down1) ||
-        Input.isJustDown(menuNavigationKeys.Down2))
+        Input.isJustDown(menuNavigationKeys.Down2) ||
+        Input.isJustDown(menuNavigationKeys.Down3))
     {
         cursorPos[currentMenu] = (cursorIndex + 1) % markerCount;
         if (markerCount > 1) playSound("menu.wav");
     }
     if (Input.isJustDown(menuNavigationKeys.Up1) ||
-        Input.isJustDown(menuNavigationKeys.Up2))
+        Input.isJustDown(menuNavigationKeys.Up2) ||
+        Input.isJustDown(menuNavigationKeys.Up3))
     {
         cursorPos[currentMenu] = (cursorIndex + markerCount - 1) % markerCount;
         if (markerCount > 1) playSound("menu.wav");

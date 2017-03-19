@@ -4,7 +4,7 @@ var flagIcon = getTexture("tileset.png", false);
 var flagIconUVs = new Vector4(1 / 16, 12 / 32, 2 / 16, 13 / 32);
 
 var FLAG_CAPTURE_SPEED = .10;
-var FLAG_POINT_SPEED = .2;
+var FLAG_POINT_SPEED = .002;
 
 function createFlagPole(position)
 {

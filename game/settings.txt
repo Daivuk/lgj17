@@ -1,7 +1,7 @@
 resolution=1280x720
 retroResolution=256x160
 retroMode=true
-gameName=Nix Rescue Ship
+gameName=Retro Island War
 resizableWindow=false
 fullscreen=true
 fixedStep=false

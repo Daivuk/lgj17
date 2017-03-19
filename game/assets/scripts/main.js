@@ -141,10 +141,11 @@ function update(dt)
                                 playSound("pageFlip.wav");
                                 break;
                             case 1:
+                                gameState = GAME_STATE_KEYS;
+                                showMenu("keys");
+                                playSound("pageFlip.wav");
                                 break;
                             case 2:
-                                break;
-                            case 3:
                                 quit();
                                 break;
                             case -2:
@@ -189,9 +190,16 @@ function update(dt)
                                 break;
                         }
                         break;
-/*
-var GAME_STATE_VIDEO = 5;
-var GAME_STATE_KEYS = 6;*/
+                    case GAME_STATE_KEYS:
+                        switch (index)
+                        {
+                            case -2:
+                                gameState = GAME_STATE_MAIN_MENU;
+                                showMenu("menu");
+                                playSound("pageFlip.wav");
+                                break;
+                        }
+                        break;
                 }
             }
             break;

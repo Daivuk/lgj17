@@ -1100,6 +1100,7 @@ declare enum Platform {
 
 declare namespace System {
     function getPlatform(): Platform;
+    function setFullscreen(fullscreen: boolean);
 }
 
 declare class Entity {

@@ -5,11 +5,11 @@ var boatTextures = [
 var boatSlices = [[],[]];
 for (var i = 0; i < 10; ++i)
 {
-    boatSlices[0].push(new Vector4(.5, .375 + i * .0625, .625, .375 + (i + 1) * .0625));
+    boatSlices[0].push(new Vector4(.625, .375 + i * .0625, .75, .375 + (i + 1) * .0625));
 }
 for (var i = 0; i < 10; ++i)
 {
-    boatSlices[1].push(new Vector4(.625, .375 + i * .0625, .75, .375 + (i + 1) * .0625));
+    boatSlices[1].push(new Vector4(.75, .375 + i * .0625, .875, .375 + (i + 1) * .0625));
 }
 
 var sailSound = [

@@ -1,3 +1,5 @@
+Input.setMouseVisible(false);
+
 var entities = [];
 var renderables = [];
 var updatables = [];

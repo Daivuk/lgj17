@@ -1,5 +1,5 @@
 var tankIcon = getTexture("tileset.png", false);
-var tankIconUVs = new Vector4(2 / 16, 9 / 16, 3 / 16, 10 / 16);
+var tankIconUVs = new Vector4(2 / 16, 9 / 32, 3 / 16, 10 / 32);
 var tankTextures = [
     getTexture("tileset.png", false),
     getTexture("tileset.png", false)

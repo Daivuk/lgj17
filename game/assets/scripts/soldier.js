@@ -1,5 +1,5 @@
 var soldierIcon = getTexture("tileset.png", false);
-var soldierIconUVs = new Vector4(2 / 16, 8 / 16, 3 / 16, 9 / 16);
+var soldierIconUVs = new Vector4(2 / 16, 8 / 32, 3 / 16, 9 / 32);
 var soldierTextures = [
     getTexture("tileset.png", false),
     getTexture("tileset.png", false),

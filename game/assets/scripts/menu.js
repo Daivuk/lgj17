@@ -2,7 +2,7 @@ var menuTexture = getTexture("tileset.png", false);
 var menu = getTiledMap("menu.tmx");
 var menuCursorMarkers = {};
 var menuCursorTexture = getTexture("tileset.png", false);
-var menuCursorUVs = new Vector4(1 / 16, 13 / 16, 2 / 16, 14 / 16);
+var menuCursorUVs = new Vector4(1 / 16, 13 / 32, 2 / 16, 14 / 32);
 var menuCursorAnim = new NumberAnim(-1);
 
 var menuNavigationKeys = {
@@ -37,6 +37,9 @@ function initMenus()
 
 function showMenu(name)
 {
+    sailSound[0].setVolume(0);
+    sailSound[1].setVolume(0);
+
     currentMenu = name;
     if (cursorPos[currentMenu] === undefined) cursorPos[currentMenu] = 0;
     switch (currentMenu)
@@ -50,23 +53,34 @@ function showMenu(name)
         case "player":
             menuOffset = new Vector2(0, 20 * 8);
             break;
+        case "end":
+            menuOffset = new Vector2(32 * 8, 20 * 8);
+            break;
     }
 }
 
-function updateMenu()
+function updateMenu(dt)
 {
     var cursorIndex = cursorPos[currentMenu];
     var markers = menuCursorMarkers[currentMenu];
     var markerCount = markers.length;
+
+    if (gameState == GAME_STATE_END_GAME && endInputDelay > 0)
+    {
+        endInputDelay -= dt;
+        return;
+    }
     if (Input.isJustDown(menuNavigationKeys.Down1) ||
         Input.isJustDown(menuNavigationKeys.Down2))
     {
         cursorPos[currentMenu] = (cursorIndex + 1) % markerCount;
+        if (markerCount > 1) playSound("menu.wav");
     }
     if (Input.isJustDown(menuNavigationKeys.Up1) ||
         Input.isJustDown(menuNavigationKeys.Up2))
     {
         cursorPos[currentMenu] = (cursorIndex + markerCount - 1) % markerCount;
+        if (markerCount > 1) playSound("menu.wav");
     }
     if (Input.isJustDown(menuNavigationKeys.Enter1) ||
         Input.isJustDown(menuNavigationKeys.Enter2))
@@ -89,10 +103,13 @@ function drawMenu()
     SpriteBatch.begin(Matrix.createTranslation(new Vector3(-menuOffset.x, -menuOffset.y, 0)));
     Renderer.setBlendMode(BlendMode.PREMULTIPLIED);
     menu.render();
-    var cursorIndex = cursorPos[currentMenu];
-    var markers = menuCursorMarkers[currentMenu];
-    var cursorOffset = new Vector2(markers[cursorIndex]);
-    cursorOffset.x += menuCursorAnim.get();
-    SpriteBatch.drawSpriteWithUVs(menuCursorTexture, cursorOffset, menuCursorUVs);
+    if (gameState != GAME_STATE_END_GAME || endInputDelay <= 0)
+    {
+        var cursorIndex = cursorPos[currentMenu];
+        var markers = menuCursorMarkers[currentMenu];
+        var cursorOffset = new Vector2(markers[cursorIndex]);
+        cursorOffset.x += menuCursorAnim.get();
+        SpriteBatch.drawSpriteWithUVs(menuCursorTexture, cursorOffset, menuCursorUVs);
+    }
     SpriteBatch.end();
 }

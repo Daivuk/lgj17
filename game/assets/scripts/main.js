@@ -12,7 +12,7 @@ var blueColor = new Color(.25, .25, 1);
 
 var score = [0, 0];
 
-var whiteUVs = new Vector4(15 / 16, 1 / 16, 15 / 16, 1 / 16);
+var whiteUVs = new Vector4(15 / 16, 1 / 32, 15 / 16, 1 / 32);
 
 var GAME_STATE_INPUT_SELECT = 0;
 var GAME_STATE_MAIN_MENU = 1;
@@ -22,6 +22,7 @@ var GAME_STATE_END_GAME = 4;
 var GAME_STATE_VIDEO = 5;
 var GAME_STATE_KEYS = 6;
 var gameState = GAME_STATE_INPUT_SELECT;
+var endInputDelay = 0;
 
 function addEntity(entity)
 {
@@ -67,9 +68,11 @@ function update(dt)
     switch (gameState)
     {
         case GAME_STATE_GAME:
-            if (Input.isJustDown(Key.ESCAPE))
+            if (Input.isJustDown(menuNavigationKeys.Back1) ||
+                Input.isJustDown(menuNavigationKeys.Back2))
             {
-                quit();
+                gameState = GAME_STATE_NEW_GAME;
+                showMenu("player");
                 return;
             }
 
@@ -88,9 +91,26 @@ function update(dt)
                 entities.splice(entities.indexOf(entity), 1);
             }
             toRemoveEntities = [];
+
+            if (score[0] >= 1) // So if it's a tie, player 1 win. shrug
+            {
+                gameState = GAME_STATE_END_GAME;
+                showMenu("end");
+                endInputDelay = 2;
+                playSound("victory.wav");
+            }
+            else if (score[1] >= 1)
+            {
+                gameState = GAME_STATE_END_GAME;
+                menu.setTileAt("DimedText", 51, 23, 83);
+                showMenu("end");
+                endInputDelay = 2;
+                if (playerCount == 1) playSound("defeat.wav");
+                else playSound("victory.wav");
+            }
             break;
         default:
-            var index = updateMenu();
+            var index = updateMenu(dt);
             if (index != -1)
             {
                 switch (gameState)
@@ -102,11 +122,13 @@ function update(dt)
                                 useXArcadeInput = false;
                                 gameState = GAME_STATE_MAIN_MENU;
                                 showMenu("menu");
+                                playSound("pageFlip.wav");
                                 break;
                             case 1:
                                 useXArcadeInput = true;
                                 gameState = GAME_STATE_MAIN_MENU;
                                 showMenu("menu");
+                                playSound("pageFlip.wav");
                                 break;
                         }
                         break;
@@ -116,6 +138,7 @@ function update(dt)
                             case 0:
                                 gameState = GAME_STATE_NEW_GAME;
                                 showMenu("player");
+                                playSound("pageFlip.wav");
                                 break;
                             case 1:
                                 break;
@@ -127,6 +150,7 @@ function update(dt)
                             case -2:
                                 gameState = GAME_STATE_INPUT_SELECT;
                                 showMenu("key");
+                                playSound("pageFlip.wav");
                                 break; 
                         }
                         break;
@@ -146,11 +170,26 @@ function update(dt)
                             case -2:
                                 gameState = GAME_STATE_MAIN_MENU;
                                 showMenu("menu");
+                                playSound("pageFlip.wav");
+                                break;
+                        }
+                        break;
+                    case GAME_STATE_END_GAME:
+                        switch (index)
+                        {
+                            case 0:
+                                gameState = GAME_STATE_MAIN_MENU;
+                                showMenu("menu");
+                                playSound("pageFlip.wav");
+                                break;
+                            case -2:
+                                gameState = GAME_STATE_MAIN_MENU;
+                                showMenu("menu");
+                                playSound("pageFlip.wav");
                                 break;
                         }
                         break;
 /*
-var GAME_STATE_END_GAME = 4;
 var GAME_STATE_VIDEO = 5;
 var GAME_STATE_KEYS = 6;*/
                 }
@@ -299,11 +338,11 @@ function render()
         case GAME_STATE_GAME:
             // Sort renderable top first
             renderables.sort(function(a, b){return a.position.y < b.position.y ? -1 : 1});
-            if (playerCount == 1)
+      /*      if (playerCount == 1)
             {
                 renderWorld(player1, fullViewport);
             }
-            else
+            else*/
             {
                 renderWorld(player1, leftViewport);
                 renderWorld(player2, rightViewport);
@@ -324,11 +363,11 @@ function render()
             //--- Minimap
             SpriteBatch.drawRectWithUVs(minimap, new Rect(offset.x, offset.y, 32, 32), minimapUVs);
 
-            if (playerCount == 1)
+       /*     if (playerCount == 1)
             {
                 SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)), boatIconUVs);
             }
-            else
+            else*/
             {
                 SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, blueColor);
                 SpriteBatch.drawSpriteWithUVs(boaticon, player2.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, redColor);
@@ -341,8 +380,8 @@ function render()
 
             //--- Score board
             SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 - 32, resolution.y - 8, 64, 8), whiteUVs, Color.BLACK);
-            SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 - score[0] * 31 - 1, resolution.y - 7, score[0] * 30, 6), whiteUVs, blueColor);
-            SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 + 1, resolution.y - 7, score[1] * 31, 6), whiteUVs, redColor);
+            SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 - score[0] * 30 - 1, resolution.y - 7, score[0] * 30, 6), whiteUVs, blueColor);
+            SpriteBatch.drawRectWithUVs(minimap, new Rect(resolution.x / 2 + 1, resolution.y - 7, score[1] * 30, 6), whiteUVs, redColor);
 
             SpriteBatch.end();
             break;

@@ -1,9 +1,9 @@
 var tiledMapTexture = getTexture("tileset.png", false);
 var tiledMap;
 var minimap = getTexture("tileset.png", false);
-var minimapUVs = new Vector4(.25, .5, .5, .75);
+var minimapUVs = new Vector4(.25, .5/2, .5, .75/2);
 var boaticon = getTexture("tileset.png", false);
-var boatIconUVs = new Vector4(3 / 16, 12 / 16, 4 / 16, 13 / 16);
+var boatIconUVs = new Vector4(3 / 16, 12 / 32, 4 / 16, 13 / 32);
 var zonesLayer;
 
 var zones = {};

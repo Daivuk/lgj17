@@ -1,0 +1,13 @@
+<sheet texture="tileset.png" spriteWidth="32" spriteHeight="32" originX="16" originY="16">
+  <anim name="puff" fps="20">
+    <frame id="16"/>
+    <frame id="17"/>
+    <frame id="18"/>
+    <frame id="19"/>
+    <frame id="20"/>
+    <frame id="21"/>
+    <frame id="22"/>
+    <frame id="23"/>
+    <frame id="24"/>
+  </anim>
+</sheet>

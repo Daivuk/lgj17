@@ -1,10 +1,10 @@
 var flagPoleTexture = getTexture("tileset.png", false);
 var flagTexture = getTexture("tileset.png", false);
 var flagIcon = getTexture("tileset.png", false);
-var flagIconUVs = new Vector4(1 / 16, 12 / 16, 2 / 16, 13 / 16);
+var flagIconUVs = new Vector4(1 / 16, 12 / 32, 2 / 16, 13 / 32);
 
 var FLAG_CAPTURE_SPEED = .10;
-var FLAG_POINT_SPEED = .002;
+var FLAG_POINT_SPEED = .2;
 
 function createFlagPole(position)
 {
@@ -12,7 +12,7 @@ function createFlagPole(position)
         position: new Vector2(position),
         drawPos: position.sub(new Vector2(0, 9)),
         texture: flagPoleTexture,
-        uvs: new Vector4(3 / 16, .5, .25, 11 / 16),
+        uvs: new Vector4(3 / 16, 8 / 32, .25, 11 / 32),
         render: drawFlagPole
     };
     addEntity(flagPole);
@@ -34,7 +34,10 @@ function createFlag(position, zone)
         color: Color.WHITE,
         zone: zone,
         update: updateFlag,
-        render: drawFlag
+        render: drawFlag,
+        shotDelay: 0,
+        puff: createSpriteAnimInstance("puff.spriteanim"),
+        puffPosition: new Vector2(0, 0)
     };
     addEntity(flag);
     return flag;
@@ -43,6 +46,7 @@ function createFlag(position, zone)
 function drawFlag(flag)
 {
     SpriteBatch.drawSpriteAnim(flag.sprite, flag.position.add(new Vector2(0, -flag.percent * 10)), flag.color);
+    if (flag.puff.isPlaying()) SpriteBatch.drawSpriteAnim(flag.puff, flag.puffPosition);
 }
 
 function updateFlag(flag, dt)
@@ -128,5 +132,25 @@ function updateFlag(flag, dt)
             }
             break;
     }
-}
 
+    // Shots and cannon fires when contested
+    if (flag.zone.count[0] > 0 && flag.zone.count[1] > 0)
+    {
+        flag.shotDelay -= dt;
+        if (flag.shotDelay <= 0)
+        {
+            flag.shotDelay = Random.getNext(2) + 1;
+
+            // Are we close enough to player?
+            var vol = getAtt(player1, flag.position);
+            if (playerCount == 2) vol += getAtt(player2, flag.position);
+            if (vol > 1) vol = 1;
+            if (vol > 0)
+            {
+                playSound("shot.wav", vol * .15, 0, Random.getNext(10) / 15 + 1);
+                flag.puff.play("puff");
+                flag.puffPosition = new Vector2(flag.position.x + Random.getNext(32) - 16, flag.position.y + Random.getNext(32) - 16);
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="8" tileheight="8" nextobjectid="37">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="8" tileheight="8" nextobjectid="63">
  <tileset firstgid="1" name="tileset" tilewidth="8" tileheight="8">
   <image source="../textures/tileset.png" width="128" height="128"/>
   <terraintypes>
@@ -135,6 +135,31 @@
   <object id="34" type="flag_7" x="440" y="448" width="16" height="16"/>
   <object id="35" type="flag_5" x="80" y="256" width="16" height="8"/>
   <object id="36" type="flag_6" x="48" y="56" width="8" height="16"/>
+  <object id="37" type="node" x="360" y="184" width="8" height="8"/>
+  <object id="38" type="node" x="264" y="176" width="8" height="8"/>
+  <object id="39" type="node" x="320" y="256" width="8" height="8"/>
+  <object id="40" type="node" x="376" y="312" width="8" height="8"/>
+  <object id="41" type="node" x="272" y="320" width="8" height="8"/>
+  <object id="42" type="node" x="264" y="408" width="8" height="8"/>
+  <object id="43" type="node" x="128" y="424" width="8" height="8"/>
+  <object id="44" type="node" x="72" y="360" width="8" height="8"/>
+  <object id="45" type="node" x="136" y="312" width="8" height="8"/>
+  <object id="46" type="node" x="176" y="264" width="8" height="8"/>
+  <object id="47" type="node" x="184" y="192" width="8" height="8"/>
+  <object id="48" type="node" x="120" y="192" width="8" height="8"/>
+  <object id="49" type="node" x="24" y="200" width="8" height="8"/>
+  <object id="50" type="node" x="16" y="112" width="8" height="8"/>
+  <object id="51" type="node" x="8" y="8" width="8" height="8"/>
+  <object id="52" type="node" x="120" y="24" width="8" height="8"/>
+  <object id="53" type="node" x="208" y="88" width="8" height="8"/>
+  <object id="54" type="node" x="272" y="64" width="8" height="8"/>
+  <object id="55" type="node" x="368" y="80" width="8" height="8"/>
+  <object id="56" type="node" x="480" y="200" width="8" height="8"/>
+  <object id="57" type="node" x="472" y="304" width="8" height="8"/>
+  <object id="58" type="node" x="488" y="400" width="8" height="8"/>
+  <object id="59" type="node" x="488" y="488" width="8" height="8"/>
+  <object id="60" type="node" x="368" y="480" width="8" height="8"/>
+  <object id="61" type="node" x="384" y="392" width="8" height="8"/>
  </objectgroup>
  <layer name="collisions" width="64" height="64" visible="0" opacity="0.4">
   <data encoding="base64" compression="gzip">

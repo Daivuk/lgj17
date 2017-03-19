@@ -5,11 +5,11 @@ var boatTextures = [
 var boatSlices = [[],[]];
 for (var i = 0; i < 10; ++i)
 {
-    boatSlices[0].push(new Vector4(.625, .375 + i * .0625, .75, .375 + (i + 1) * .0625));
+    boatSlices[0].push(new Vector4(.625, .375/2 + i * .0625/2, .75, .375/2 + (i + 1) * .0625/2));
 }
 for (var i = 0; i < 10; ++i)
 {
-    boatSlices[1].push(new Vector4(.75, .375 + i * .0625, .875, .375 + (i + 1) * .0625));
+    boatSlices[1].push(new Vector4(.75, .375/2 + i * .0625/2, .875, .375/2 + (i + 1) * .0625/2));
 }
 
 var sailSound = [
@@ -77,6 +77,7 @@ function updateBoat(boat, dt)
     var pickup = false;
     if (playerCount == 1 && boat.index == 1)
     {
+        // AI
 
     }
     else

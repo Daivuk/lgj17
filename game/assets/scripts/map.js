@@ -58,7 +58,11 @@ function initMap()
     droppedUnits = [];
     score = [0, 0];
     zones = {};
+    aiTempDirDelay = 0;
+    doTankNext = false;
+    aiStuckDelay = 0;
     zonesArr = [];
+    drowners = [];
     zonesLayer = tiledMap.getLayerIndex("Zones");
     player1 = null;
     player2 = null;
@@ -81,6 +85,7 @@ function initMap()
                 else
                     player1.keys = player1KeyboardKeys;
                 player1.zone = new Rect(mapObj.position, mapObj.size);
+                player1.storePos = midPos;
                 break;
             case "player2":
                 if (!player2) player2 = createBoat(midPos, 1);
@@ -92,6 +97,7 @@ function initMap()
                 else
                     player2.keys = player2KeyboardKeys;
                 player2.zone = new Rect(mapObj.position, mapObj.size);
+                player2.storePos = midPos;
                 break;
             case "player1_men":
                 if (!player1) player1 = createBoat(midPos, 0);

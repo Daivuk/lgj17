@@ -10,12 +10,12 @@
  </layer>
  <layer name="Text" width="64" height="60" opacity="0.8">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2aO0sDQRSF7/48H1WCb3+AqD9A1MJGJZ2NgXTb2lmkSTeNQrpAUEjnG9KlUMHOM+xAsgvZnWVnM2T3fHAygRzuzM2dPGb3ihCyvHzPiCw/K4HIKrQGrQe+V7N4dpDzLrQH7dcs/wfoETpE3kfQsaP8X6E36N1NuNJ4gp6hU+R9Bp2n5D/QD3h9hOEuI+6y5O+aDzO6zL8FdSR6z3tQX6IajKE/B/HLoIr1n61DmOGtYv6+OIAuZLrnT8xzvfc7/pZVKT6hrwxPF3qB7qFJ2QtaMD/Qr+9FEEIIIYQQQkjNaZgxef1Rn/3HvhZFyIJomnHe/g/9LIuQWqLvv7R8L4IQQgghlWdo6VMS3aO9Nn08t476mXTMQQleYkdo6VMSr39zvtUa3Weh//MOTXxXXmLPyNKnJF7/DReTB9G1hsvAou8jj5dYY9vnpyRe/y0Hc+trTLrn5woxbyS9rnm8JJtQot9S/fnXfW9Z/W5K4vXfLDB3z8SaGPVl+p3eKOAl+ela+pTE679dYM60mibj5vESkhfbPl8l8f3fLnD+SdvTyXNVHi8hdeYfqtkkUgA8AAA=
+   H4sIAAAAAAAAC+2aPUsDQRCG536eH1WC3/4AUX+AqIWNSjobA+mutbNIk24bhXSBoJDOb0iXQgU73+UWkjvI3R63lyV37wNvNpBhdiYz+di7ESFkefmeEVl+VgKRVWgNWg98R7N4dpDzLrQH7dcs/wfoETpE3kfQsaP8X6E36N2Nu9J4gp6hU+R9Bp2n5D/QD3h9hOUuw++y5O+aD7O6zL8FdSR6z3tQX6IajKE/B/7LoIr1n61DmGFbxfx9cQBdyLTnT8xz3fsdf2FVik/oK8OmC71A99Ck7IAWzA/06zsIQgghhBBCCKk5DbMmrz/qs//YV1CELIimWef1f+gnLEJqib7/0vIdBCGEEEIqz9DSTkl0j/bazPHcOppn0j4HJdgSO0JLOyXx+jfnm1qj5yz0f96h8e/KltgzsrRTEq//hovNg+haw2VgMfeRx5ZYYzvnpyRe/y0He+trTHrm5wo+byS9rnlsSTahRL+l+vOv596y5t2UxOu/WWDvnvE1MerL9Du9UcCWkLx0Le2UxPt/u8CeaT2d9JvHlpC82M45K4n3f7vA+S+tp5Pnyjy2pN78AzTHK5oAPAAA
   </data>
  </layer>
  <layer name="DimedText" width="64" height="60" opacity="0.55">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3aoQ7CMBDG8esrwsvwAqARM7hZHBaHnSMBg5vFYXHcpSXBbWyF5rb/L7lAxpKvoU23tRMB0GWltdVqtGqtXTp+0DppnbVarcf/mwYAAAAAAABgImydUYLITT/2Etch7+m3RalGoQhbe65LNwJ/c5XY57YXYfsMthdxT8fseyuMBwAAAAAYq8+6S9Xj3KXT/D6q7lN+akx+K+l/m2l+Dp7znxLXUC4S3+ecW34OrvNDnCfXYfg7vK7zM/Cc/15H3YT4nveQPvCcn4PnfJt/rQ9sDh56Hfacn4Pn/KPEe7D9TPNriWPPrkM2Fm0u+nxumHp+Dp7zS4+/0vm2p2rPy6dUjXx/H+45P4e553v0An3mVqwAPAAA
+   H4sIAAAAAAAAC+3bsQ/BQBTH8dd/EX9M/wFmQxdb125Wm9UmYbF1tVlt3sudEJG06rR5+v0kL6jGr3F1zl2JAGiSay21dlql1ipuX2tttfZatdal/0MDAAAAAAAA8CdsnlEykZPeVBLmIc/xuclQB4VB2NxzOfRBoDdHCW1uaxG2zmBrEee4ze7XwvkAAAAAAN9qM+9StNh36jS/jaJ5l5/6Jr+W+L6NND8Fz/lXCXMoBwnXc44tPwXX+VnoJ+dZ92t4Xecn4Dn/Po+6yMJ13l3awHN+Cp7zrf+1NrA+uOv3sOf8FDznbySMwar4uJTQFtYvW9vYZ/N5HP1v+bk8/tty73s+XU/2nJ+C5/zX88/aw34/bmPtpHlc6jn/3fk3+/A1POenMPZ8j24sBKy9ADwAAA==
   </data>
  </layer>
  <objectgroup name="Cursors">

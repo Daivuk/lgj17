@@ -1,5 +1,7 @@
 getTexture("tileset.png", false);
 
+var drowners = [];
+
 function createDrowner(position)
 {
     var drowner = {
@@ -10,6 +12,7 @@ function createDrowner(position)
         helpDelay: Random.getNext(3) + 2
     }
     addEntity(drowner);
+    drowners.push(drowner);
     return drowner;
 }
 
@@ -30,8 +33,9 @@ function doPickup(drowner, player)
         var distance = Vector2.distanceSquared(player.position, drowner.position);
         if (distance <= PICKUP_DIST)
         {
-            playSound("save.wav");
+            if (playerCount == 2 || player.index == 0) playSound("save.wav");
             removeEntity(drowner);
+            drowners.splice(drowners.indexOf(drowner), 1);
             player.hasMan = true;
             return true;
         }

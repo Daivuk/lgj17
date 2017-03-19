@@ -649,6 +649,7 @@ declare class TiledMap {
 
     collision(from: Vector2, to: Vector2, size: Vector2): Vector2;
     setCollision(x: number, y: number, passable: boolean);
+    getCollision(x: number, y: number): boolean;
 }
 /** Same as TiledMap.createFromFile */
 declare function getTiledMap(filename: string): TiledMap;

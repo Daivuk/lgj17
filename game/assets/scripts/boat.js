@@ -72,24 +72,29 @@ function updateBoat(boat, dt)
     var desiredDir = new Vector2(0, 0);
     var dir = new Vector2(Math.cos(boat.angle * ToRad), Math.sin(boat.angle * ToRad));
 
-    var buySoldier = false;
-    var buyTank = false;
-    var pickup = false;
+    var playerInputs = {}
     if (playerCount == 1 && boat.index == 1)
     {
         // AI
-
+        playerInputs = updateAI(boat, dt);
     }
     else
     {
-        if (Input.isDown(boat.keys.Right)) desiredDir.x += 1;
-        if (Input.isDown(boat.keys.Left)) desiredDir.x -= 1;
-        if (Input.isDown(boat.keys.Down)) desiredDir.y += 1;
-        if (Input.isDown(boat.keys.Up)) desiredDir.y -= 1;
-        buySoldier = (Input.isJustDown(boat.keys.BuySoldier) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank);
-        buyTank = (Input.isJustDown(boat.keys.BuyTank) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank);
-        pickup = Input.isJustDown(boat.keys.Drop);
+        var playerInputs = {
+            right: Input.isDown(boat.keys.Right),
+            left: Input.isDown(boat.keys.Left),
+            down: Input.isDown(boat.keys.Down),
+            up: Input.isDown(boat.keys.Up),
+            buySoldier: (Input.isJustDown(boat.keys.BuySoldier) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank),
+            buyTank: (Input.isJustDown(boat.keys.BuyTank) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank),
+            pickup: Input.isJustDown(boat.keys.Drop)
+        };
     }
+
+    if (playerInputs.right) desiredDir.x += 1;
+    if (playerInputs.left) desiredDir.x -= 1;
+    if (playerInputs.down) desiredDir.y += 1;
+    if (playerInputs.up) desiredDir.y -= 1;
 
     if (desiredDir.lengthSquared() > 0)
     {
@@ -164,29 +169,29 @@ function updateBoat(boat, dt)
     // If boat arrives in zone and has man drop him, and allow to purchase army
     if (boat.zone.contains(boat.position))
     {
-        if (boat.hasMan && boat.availableMen < 5)
+        if (boat.hasMan/* && boat.availableMen < 5*/)
         {
             boat.hasMan = false;
             boat.availableMen++;
             if (boat.index == 0 || playerCount == 2) playSound("free.wav");
         }
 
-        if (buySoldier)
+        if (playerInputs.buySoldier)
         {
             boat.hasSoldier = true;
             --boat.availableMen;
-            playSound("buysoldier.wav");
+            if (boat.index == 0 || playerCount == 2) playSound("buysoldier.wav");
         }
-        if (buyTank)
+        if (playerInputs.buyTank)
         {
             boat.hasTank = true;
             boat.availableMen -= 3;
-            playSound("buytank.wav");
+            if (boat.index == 0 || playerCount == 2) playSound("buytank.wav");
         }
     }
 
     // Drop/pickup troops
-    if (pickup)
+    if (playerInputs.pickup)
     {
         if (boat.hasSoldier)
         {
@@ -216,7 +221,7 @@ function updateBoat(boat, dt)
                             var soldier = createSoldier(new Vector2(x * 8 + 4, y * 8 + 4), boat.index);
                             soldier.tileX = x;
                             soldier.tileY = y;
-                            playSound("dropSoldier.wav");
+                            if (boat.index == 0 || playerCount == 2) playSound("dropSoldier.wav");
                             soldier.worth = 1;
                             soldier.zoneId = zoneId;
                             soldier.isSoldier = true;
@@ -255,7 +260,7 @@ function updateBoat(boat, dt)
                             var tank = createTank(new Vector2(x * 8 + 4, y * 8 + 4), boat.index);
                             tank.tileX = x;
                             tank.tileY = y;
-                            playSound("dropTank.wav");
+                            if (boat.index == 0 || playerCount == 2) playSound("dropTank.wav");
                             tank.zoneId = zoneId;
                             tank.worth = 3;
                             tank.isTank = true;
@@ -288,8 +293,8 @@ function updateBoat(boat, dt)
                 removeEntity(picked);
                 boat.hasSoldier = picked.isSoldier;
                 boat.hasTank = picked.isTank;
-                if (boat.hasSoldier) playSound("buysoldier.wav");
-                if (boat.hasTank) playSound("buytank.wav");
+                if (boat.hasSoldier) if (boat.index == 0 || playerCount == 2) playSound("buysoldier.wav");
+                if (boat.hasTank) if (boat.index == 0 || playerCount == 2) playSound("buytank.wav");
             }
         }
     }

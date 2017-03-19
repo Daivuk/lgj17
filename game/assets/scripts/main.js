@@ -146,13 +146,9 @@ function update(dt)
                                 playSound("pageFlip.wav");
                                 break;
                             case 2:
+                            case -2:
                                 quit();
                                 break;
-                            case -2:
-                                gameState = GAME_STATE_INPUT_SELECT;
-                                showMenu("key");
-                                playSound("pageFlip.wav");
-                                break; 
                         }
                         break;
                     case GAME_STATE_NEW_GAME:
@@ -346,11 +342,11 @@ function render()
         case GAME_STATE_GAME:
             // Sort renderable top first
             renderables.sort(function(a, b){return a.position.y < b.position.y ? -1 : 1});
-      /*      if (playerCount == 1)
+            if (playerCount == 1)
             {
                 renderWorld(player1, fullViewport);
             }
-            else*/
+            else
             {
                 renderWorld(player1, leftViewport);
                 renderWorld(player2, rightViewport);
@@ -371,11 +367,11 @@ function render()
             //--- Minimap
             SpriteBatch.drawRectWithUVs(minimap, new Rect(offset.x, offset.y, 32, 32), minimapUVs);
 
-       /*     if (playerCount == 1)
+            if (playerCount == 1)
             {
                 SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)), boatIconUVs);
             }
-            else*/
+            else
             {
                 SpriteBatch.drawSpriteWithUVs(boaticon, player1.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, blueColor);
                 SpriteBatch.drawSpriteWithUVs(boaticon, player2.position.div(tiledMap.getSize().mul(8).div(32)).add(offset), boatIconUVs, redColor);

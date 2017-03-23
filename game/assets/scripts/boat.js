@@ -1,3 +1,27 @@
+/*
+var BOAT_MAX_SPEED = 48;
+var BOAT_ACCELL = 32;
+var BOAT_DECELL = 16;
+var BOAT_TURN_SPEED = 90;
+*/
+
+var BOAT_MAX_SPEED = 48;
+var BOAT_ACCELL = 128;
+var BOAT_DECELL = 32;
+var BOAT_TURN_SPEED = 180;
+
+/*
+var BOAT_MAX_SPEED = 48;
+var BOAT_ACCELL = 32;
+var BOAT_DECELL = 16;
+var BOAT_TURN_SPEED = 90;
+*/
+
+var PICKUP_DIST = 12 * 12;
+
+var ToRad = Math.PI / 180;
+var ToDeg = 180 / Math.PI;
+
 var boatTextures = [
     getTexture("tileset.png", false),
     getTexture("tileset.png", false)
@@ -35,20 +59,19 @@ function createBoat(position, in_index)
         vel: 0,
         index: in_index,
         zone: new Rect(0, 0, 0, 0),
-        availableMen: 0
+        availableMen: 0,
+
+        // AI stuff
+        aiTempDir: new Vector2(0, 0),
+        aiTempDirDelay: 0,
+        aiStuckPosition: new Vector2(0, 0),
+        aiStuckDelay: 0,
+        zoneTarget: -1,
+        doTankNext: false
     }
     addEntity(boat);
     return boat;
 }
-
-var ToRad = Math.PI / 180;
-var ToDeg = 180 / Math.PI;
-
-var BOAT_MAX_SPEED = 48;
-var BOAT_ACCELL = 32;
-var BOAT_DECELL = 16;
-
-var PICKUP_DIST = 12 * 12;
 
 function renderBoat(boat)
 {
@@ -85,8 +108,8 @@ function updateBoat(boat, dt)
             left: Input.isDown(boat.keys.Left),
             down: Input.isDown(boat.keys.Down),
             up: Input.isDown(boat.keys.Up),
-            buySoldier: (Input.isJustDown(boat.keys.BuySoldier) && boat.availableMen >= 1 && !boat.hasSoldier && !boat.hasTank),
-            buyTank: (Input.isJustDown(boat.keys.BuyTank) && boat.availableMen >= 3 && !boat.hasSoldier && !boat.hasTank),
+            buySoldier: Input.isJustDown(boat.keys.BuySoldier),
+            buyTank: Input.isJustDown(boat.keys.BuyTank),
             pickup: Input.isJustDown(boat.keys.Drop)
         };
     }
@@ -106,13 +129,13 @@ function updateBoat(boat, dt)
         {
             if (desiredAngle - angle < 180)
             {
-                angle += dt * 90;
+                angle += dt * BOAT_TURN_SPEED;
                 if (angle > desiredAngle) angle = desiredAngle;
             }
             else
             {
                 angle += 360;
-                angle -= dt * 90;
+                angle -= dt * BOAT_TURN_SPEED;
                 if (angle < desiredAngle) angle = desiredAngle;
                 angle -= 360;
             }
@@ -121,13 +144,13 @@ function updateBoat(boat, dt)
         {
             if (angle - desiredAngle < 180)
             {
-                angle -= dt * 90;
+                angle -= dt * BOAT_TURN_SPEED;
                 if (angle < desiredAngle) angle = desiredAngle;
             }
             else
             {
                 angle -= 360;
-                angle += dt * 90;
+                angle += dt * BOAT_TURN_SPEED;
                 if (angle > desiredAngle) angle = desiredAngle;
                 angle += 360;
             }
@@ -169,24 +192,28 @@ function updateBoat(boat, dt)
     // If boat arrives in zone and has man drop him, and allow to purchase army
     if (boat.zone.contains(boat.position))
     {
-        if (boat.hasMan/* && boat.availableMen < 5*/)
+        if (boat.hasMan && boat.availableMen < 5)
         {
             boat.hasMan = false;
             boat.availableMen++;
             if (boat.index == 0 || playerCount == 2) playSound("free.wav");
         }
 
-        if (playerInputs.buySoldier)
+        if (playerInputs.pickup)
         {
-            boat.hasSoldier = true;
-            --boat.availableMen;
-            if (boat.index == 0 || playerCount == 2) playSound("buysoldier.wav");
-        }
-        if (playerInputs.buyTank)
-        {
-            boat.hasTank = true;
-            boat.availableMen -= 3;
-            if (boat.index == 0 || playerCount == 2) playSound("buytank.wav");
+            if (boat.availableMen >= 1 && !boat.hasTank && !boat.hasSoldier)
+            {
+                boat.hasSoldier = true;
+                --boat.availableMen;
+                if (boat.index == 0 || playerCount == 2) playSound("buysoldier.wav");
+            }
+            else if (boat.availableMen >= 2 && boat.hasSoldier)
+            {
+                boat.hasSoldier = false;
+                boat.hasTank = true;
+                boat.availableMen -= 2;
+                if (boat.index == 0 || playerCount == 2) playSound("buytank.wav");
+            }
         }
     }
 

@@ -1,10 +1,13 @@
+/*
 var aiTempDir = new Vector2(0, 0);
 var aiTempDirDelay = 0;
-var aiDT;
 var aiStuckPosition = new Vector2(0, 0);
 var aiStuckDelay = 0;
 var zoneTarget = -1;
 var doTankNext = false;
+*/
+
+var aiDT;
 
 function findClosestDrowner(boat)
 {
@@ -32,28 +35,28 @@ function moveToward(target, boat, inputs)
     var dirL = v3.transform(Matrix.createRotationZ(60));
     var dirR = v3.transform(Matrix.createRotationZ(-60));
 
-    if (aiStuckPosition.x == boat.position.x &&
-        aiStuckPosition.y == boat.position.y)
+    if (boat.aiStuckPosition.x == boat.position.x &&
+        boat.aiStuckPosition.y == boat.position.y)
     {
-        aiStuckDelay += aiDT;
+        boat.aiStuckDelay += aiDT;
     }
-    aiStuckPosition = new Vector2(boat.position);
+    boat.aiStuckPosition = new Vector2(boat.position);
 
     var boatDir = new Vector2(Math.cos(boat.angle * ToRad), Math.sin(boat.angle * ToRad));
 
-    if (aiStuckDelay > 2)
+    if (boat.aiStuckDelay > 2)
     {
-        aiStuckDelay = 0;
-        aiTempDirDelay = 2;
-        aiTempDir.x = -boatDir.x + (Random.getNext(3) - 1);
-        aiTempDir.y = -boatDir.y + (Random.getNext(3) - 1);
-        aiTempDir = aiTempDir.normalize();
+        boat.aiStuckDelay = 0;
+        boat.aiTempDirDelay = 2;
+        boat.aiTempDir.x = -boatDir.x + (Random.getNext(3) - 1);
+        boat.aiTempDir.y = -boatDir.y + (Random.getNext(3) - 1);
+        boat.aiTempDir = boat.aiTempDir.normalize();
     }
 
-    if (aiTempDirDelay > 0)
+    if (boat.aiTempDirDelay > 0)
     {
-        aiTempDirDelay -= aiDT;
-        dir = aiTempDir;
+        boat.aiTempDirDelay -= aiDT;
+        dir = boat.aiTempDir;
     }
     else
     {
@@ -65,19 +68,19 @@ function moveToward(target, boat, inputs)
         var colLookPos = boat.position.add(dir.mul(boat.vel * .5));
         colLookPos.x = Math.floor(colLookPos.x / 8);
         colLookPos.y = Math.floor(colLookPos.y / 8);
-        if (zoneTarget == -1 || zoneTarget != tiledMap.getTileAt(zonesLayer, colLookPos.x, colLookPos.y) - 81)
+        if (boat.zoneTarget == -1 || boat.zoneTarget != tiledMap.getTileAt(zonesLayer, colLookPos.x, colLookPos.y) - 81)
             collisionAhead = !tiledMap.getCollision(colLookPos.x, colLookPos.y);
 
         var colLookPos = boat.position.add(dirL.mul(boat.vel * .5));
         colLookPos.x = Math.floor(colLookPos.x / 8);
         colLookPos.y = Math.floor(colLookPos.y / 8);
-        if (zoneTarget == -1 || zoneTarget != tiledMap.getTileAt(zonesLayer, colLookPos.x, colLookPos.y) - 81)
+        if (boat.zoneTarget == -1 || boat.zoneTarget != tiledMap.getTileAt(zonesLayer, colLookPos.x, colLookPos.y) - 81)
             collisionAheadL = !tiledMap.getCollision(colLookPos.x, colLookPos.y);
 
         var colLookPos = boat.position.add(dirR.mul(boat.vel * .5));
         colLookPos.x = Math.floor(colLookPos.x / 8);
         colLookPos.y = Math.floor(colLookPos.y / 8);
-        if (zoneTarget == -1 || zoneTarget != tiledMap.getTileAt(zonesLayer, colLookPos.x, colLookPos.y) - 81)
+        if (boat.zoneTarget == -1 || boat.zoneTarget != tiledMap.getTileAt(zonesLayer, colLookPos.x, colLookPos.y) - 81)
             collisionAheadR = !tiledMap.getCollision(colLookPos.x, colLookPos.y);
        
         if (collisionAhead)
@@ -140,7 +143,13 @@ function updateAIDropSoldier(boat, inputs, diffOffset)
     {
         var zone = zonesArr[i];
         var dis = Vector2.distanceSquared(boat.position, zone.position);
-        var diff = zone.count[0] - zone.count[1];
+        var highestInZone = 0;
+        for (var j = 0; j < zone.count.length; ++j)
+        {
+            if (j == boat.index) continue;
+            highestInZone = Math.max(highestInZone, zone.count[j]);
+        }
+        var diff = highestInZone - zone.count[boat.index];
         if (diff <= bestPickDiff && diff >= diffOffset && dis < closest)
         {
             pick = zone;
@@ -150,9 +159,9 @@ function updateAIDropSoldier(boat, inputs, diffOffset)
     }
     if (pick)
     {
-        zoneTarget = pick.id;
+        boat.zoneTarget = pick.id;
         moveToward(pick.position, boat, inputs);
-        zoneTarget = -1;
+        boat.zoneTarget = -1;
 
         var dropCenter = boat.position.div(8);
         dropCenter.x = Math.floor(dropCenter.x);
@@ -178,19 +187,31 @@ function updateAIDropSoldier(boat, inputs, diffOffset)
 
 function updateAIEmpty(boat, inputs)
 {
-    if (!doTankNext && boat.availableMen > 0 && boat.zone.contains(boat.position))
+    if (boat.zone.contains(boat.position))
     {
-        // Buy soldier
-        inputs.buySoldier = true;
-        doTankNext = Random.getNext(100) > 80; // 20% chances to order a tank
-        return;
-    }
-    if (doTankNext && boat.availableMen > 2 && boat.zone.contains(boat.position))
-    {
-        // Buy tank
-        inputs.buyTank = true;
-        doTankNext = false;
-        return;
+        if (boat.doTankNext)
+        {
+            if (boat.availableMen >= 3 && !boat.hasSoldier)
+            {
+                // Buy soldier first
+                inputs.pickup = true;
+                return;
+            }
+            else if (boat.availableMen >= 2 && boat.hasSoldier)
+            {
+                // Upgrade to tank
+                inputs.pickup = true;
+                boat.doTankNext = false;
+                return;
+            }
+        }
+        else if (boat.availableMen > 0)
+        {
+            // Buy soldier
+            inputs.pickup = true;
+            boat.doTankNext = Random.getNext(100) > 10; // 20% chances to order a tank
+            return;
+        }
     }
 
     var closestDrowner = findClosestDrowner(boat);

@@ -964,6 +964,22 @@ declare namespace Random {
     function getNext(max: number): number;
 }
 
+// Network
+declare namespace Net {
+    function connect(ip: string, port: number, onConnected: (success: boolean) => void, onDisconnected: Function, onReceive: (from: number, name: string, data: Object) => void);
+    function disconnect();
+    function send(to: number, name: string, data: Object); // ORDERED_GARANTEED
+    function send(to: number, name: string, data: Object, rule: SendRule);
+}
+
+declare enum SendRule
+{
+    ORDERED,
+    UNORDERED,
+    ORDERED_GARANTEED,
+    UNORDERED_GARANTEED
+}
+
 // Blend mode
 declare enum BlendMode {
     OPAQUE,

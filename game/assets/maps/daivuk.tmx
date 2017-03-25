@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="tileset2" tilewidth="16" tileheight="16">
+  <image source="../textures/tileset2.png" width="256" height="256"/>
+  <terraintypes>
+   <terrain name="Grass" tile="17"/>
+   <terrain name="Ocean" tile="5"/>
+  </terraintypes>
+  <tile id="0" terrain="1,1,1,0"/>
+  <tile id="1" terrain="1,1,0,0"/>
+  <tile id="2" terrain="1,1,0,1"/>
+  <tile id="5" terrain="1,1,1,1"/>
+  <tile id="16" terrain="1,0,1,0"/>
+  <tile id="17" terrain="0,0,0,0"/>
+  <tile id="18" terrain="0,1,0,1"/>
+  <tile id="19" terrain="0,0,0,1"/>
+  <tile id="20" terrain="0,0,1,0"/>
+  <tile id="32" terrain="1,0,1,1"/>
+  <tile id="33" terrain="0,0,1,1"/>
+  <tile id="34" terrain="0,1,1,1"/>
+  <tile id="35" terrain="0,1,0,0"/>
+  <tile id="36" terrain="1,0,0,0"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+1bW1LDMAw0EPqfPg7Q1wG4/+VIZrpTdVGelm255GOHgZLUK63leOXsQgi7ynDucOrw3WG/EocOrQMuMTG4POIAThyPhn7H58cO18r5sxY4v8wdAPePDncH47eOAWug53sRkNz3yr36zz47fDngFasDmetPgZ479MH3aR+f3SqMA9fFA+VamxMaf66TKcaaSmeoi9A68qnVQY0/6+iWYIzICfSZQxOcd8RAu0bGrP9prQHkKDV3joH2vDA2vlOmHEETqE8pao7kNKZ/viY1d/CWNSpl7eX6lkN/U+NBPjDnsGaniL2sB40T/tqzea6YW9yv1/BarSIfTeK8D2nA6n485iUxgQZS5137zpQxnpvH3Ouh1IDlPWPmQQmcjfnmWC894b/x3bBhw4Z3h7YXrdUXXAPpF2AvCs8w5zNqSWj7Mutn9NSeh4UG2C+08gPZl7W8r1UspZcKL+xkNFbLfb+sTa1hLDkW1/DURex3yH3/Gv5y7vQ6Qq3KUadi9qucK+lHzxmz9Au1fgb+hrrtpbbwuA/hdX7NjSf3fbm/J71+xMLDmiU9N5mfGN9Mixl797l9lTH+nJeUvQVve3PuQ+Xqq3gC9yZLj2fDhg358DOA0uPyzH9sP1Nbv2EN/7F13NsavyYGS6+vLefWqDHnG9LC+5zIcbbJ25xgnwN73xTelCdoPscanycXrHPBPgd8HnnGx5NWrX2yNjx9F+mTljjjMgfSO7Q4dyj9Z2jB85zn/kasdyzzXMrvWNKr1HpcnvM1h7vsB0zxGDoXX2sM+Lz/FA8t/zXHgNefKR4ab16/SnNagqG+7RAP7pm8iwa4JzbEH2uzPBPO13rrpc3VwJz8y7V6rBbIZ1fv+y3EYE5vkZ9RNQ0cw993qmp8P26IP7g0QX9/kt8hvIfXd+xKc4jlL3Muc8/vyvL/Wj0ze+A/dNZp6v1J1IUa14kev1JcoHUAQAAA
+  </data>
+ </layer>
+</map>

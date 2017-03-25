@@ -197,19 +197,12 @@ function updateAIEmpty(boat, inputs)
                 inputs.pickup = true;
                 return;
             }
-            else if (boat.availableMen >= 2 && boat.hasSoldier)
-            {
-                // Upgrade to tank
-                inputs.pickup = true;
-                boat.doTankNext = false;
-                return;
-            }
         }
         else if (boat.availableMen > 0)
         {
             // Buy soldier
             inputs.pickup = true;
-            boat.doTankNext = Random.getNext(100) > 10; // 20% chances to order a tank
+            boat.doTankNext = Random.getNext(100) > 80; // 20% chances to order a tank
             return;
         }
     }
@@ -230,7 +223,16 @@ function updateAI(boat, dt)
     if (boat.hasMan)
         updateAIDropMan(boat, inputs);
     else if (boat.hasSoldier)
+    {
+        if (boat.doTankNext && boat.availableMen >= 2 && boat.hasSoldier)
+        {
+            // Upgrade to tank
+            inputs.pickup = true;
+            boat.doTankNext = false;
+            return inputs;
+        }
         updateAIDropSoldier(boat, inputs, 0);
+    }
     else if (boat.hasTank)
         updateAIDropSoldier(boat, inputs, 2);
     else 

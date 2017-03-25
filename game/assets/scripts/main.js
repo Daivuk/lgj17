@@ -23,7 +23,7 @@ var GAME_STATE_GAME = 3;
 var GAME_STATE_END_GAME = 4;
 var GAME_STATE_VIDEO = 5;
 var GAME_STATE_KEYS = 6;
-var gameState = GAME_STATE_INPUT_SELECT;
+var gameState = GAME_STATE_MAIN_MENU;
 var endInputDelay = 0;
 
 function addEntity(entity)
@@ -63,7 +63,7 @@ function renderSprite(entity)
 }
 
 initMenus();
-showMenu("key");
+showMenu("menu");
 
 function update(dt)
 {
